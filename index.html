@@ -1,232 +1,354 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tg">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#166534">
-<title>Mastchoh Shop</title>
-<style>
-:root{--green:#166534;--light:#dcfce7;--bg:#f5f7f5;--ink:#17231b}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:var(--green);color:white;padding:18px 16px}
-.top{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.brand{font-size:27px;font-weight:800}
-.tagline{font-size:14px;color:#dcfce7;margin-top:4px}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.cartbtn{background:white;color:var(--green);border:0;border-radius:10px;padding:12px;font-weight:bold}
-main{max-width:1100px;margin:auto;padding:18px 14px 40px}
-.hero{background:var(--light);padding:22px;border-radius:18px;margin-bottom:18px}
-.hero h1{margin:0 0 10px;font-size:27px}
-.hero p{line-height:1.6;margin:0}
-.tools{display:flex;gap:10px;margin:18px 0;flex-wrap:wrap}
-.tools input,.tools select{padding:12px;border:1px solid #cbd5cd;border-radius:10px;background:white;min-width:0}
-.tools input{flex:1}
-.tools select{flex:1}
-h2{font-size:21px}
-.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.card{background:white;border:1px solid #e2e8e3;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.photo{height:auto;aspect-ratio:1;background:#eaf2ec;display:grid;place-items:center;font-size:53px}
-.body{padding:12px;display:flex;flex-direction:column;gap:9px;flex:1}
-.cat{font-size:12px;color:var(--green);font-weight:bold}
-.name{font-size:16px;font-weight:bold}
-.desc{font-size:13px;color:#647067}
-.price{font-size:18px;font-weight:bold;margin-top:auto}
-.add,.order{background:var(--green);color:white;border:0;border-radius:9px;padding:11px;font-weight:bold}
-.add:active,.order:active{background:#14532d}
-.empty{background:white;border-radius:12px;padding:22px;text-align:center;grid-column:1/-1}
-footer{text-align:center;padding:20px;color:#647067;font-size:13px}
-.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:5;align-items:flex-end;justify-content:center;padding:10px}
-.overlay.open{display:flex}
-.panel{background:white;width:100%;max-width:550px;max-height:90vh;overflow:auto;border-radius:18px;padding:18px}
-.panelhead{display:flex;justify-content:space-between;align-items:center}
-.close{border:0;border-radius:50%;width:38px;height:38px;font-size:23px}
-.item{display:flex;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid #eee}
-.qty{display:flex;align-items:center;gap:8px}
-.qty button{border:0;border-radius:6px;padding:6px 11px}
-.total{display:flex;justify-content:space-between;font-weight:bold;font-size:19px;padding:16px 0}
-.field{display:block;margin:12px 0}
-.field span{display:block;font-weight:bold;font-size:14px;margin-bottom:6px}
-.field input{width:100%;padding:12px;border:1px solid #cbd5cd;border-radius:9px}
-.notice{background:#fff7d6;padding:10px;border-radius:9px;font-size:13px;line-height:1.5}
-@media(max-width:800px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:560px){.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.brand{font-size:22px}.hero h1{font-size:24px}.body{padding:9px}.photo{font-size:43px}}
-@media(max-width:340px){.products{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#087f5b">
+  <title>Мастчоҳ Шоп — Мағозаи онлайн</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f5;
+      color: #202a25;
+    }
+    header {
+      background: #087f5b;
+      color: white;
+      padding: 22px 15px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; font-size: 28px; }
+    header p { margin: 0; }
+    .wrap { max-width: 1050px; margin: auto; padding: 15px; }
+    .search {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccd5cf;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 14px;
+    }
+    .categories button, .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 14px;
+      background: #087f5b;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .categories button { background: #e0eee7; color: #14563e; }
+    .categories button.active { background: #087f5b; color: white; }
+    h2 { font-size: 21px; }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .product {
+      background: white;
+      border-radius: 13px;
+      padding: 13px;
+      box-shadow: 0 2px 8px #0000000c;
+    }
+    .photo {
+      background: #eaf4ee;
+      border-radius: 10px;
+      min-height: 100px;
+      display: grid;
+      place-items: center;
+      font-size: 48px;
+    }
+    .product h3 { font-size: 16px; margin: 12px 0 7px; }
+    .price { color: #087f5b; font-weight: bold; margin: 8px 0 12px; }
+    .product .btn { width: 100%; white-space: normal; }
+    .cart, .checkout {
+      background: white;
+      border-radius: 13px;
+      padding: 16px;
+      margin-top: 22px;
+    }
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #edf0ed;
+      padding: 10px 0;
+    }
+    .qty { display: flex; align-items: center; gap: 9px; }
+    .qty button {
+      border: 0; border-radius: 6px;
+      padding: 6px 10px; background: #e0eee7;
+    }
+    .total { font-size: 19px; font-weight: bold; margin-top: 15px; }
+    .field {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd5cf;
+      border-radius: 8px;
+      font-size: 16px;
+      margin: 7px 0 12px;
+    }
+    .checkout .btn { width: 100%; font-size: 16px; }
+    .empty { color: #66736b; }
+    footer {
+      text-align: center; padding: 24px 12px;
+      color: #617068; font-size: 14px;
+    }
+    @media (min-width: 650px) {
+      .products { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      header h1 { font-size: 34px; }
+    }
+  </style>
 </head>
 <body>
+
 <header>
-  <div class="top">
-    <div>
-      <div class="brand">🛍️ Mastchoh Shop</div>
-      <div class="tagline">Мағозаи онлайни шумо</div>
-    </div>
-    <button class="cartbtn" id="openCart">🛒 Сабад (<span id="count">0</span>)</button>
-  </div>
+  <h1>🛍️ Мастчоҳ Шоп</h1>
+  <p>Мағозаи онлайн — харид осон ва қулай!</p>
 </header>
 
-<main>
-  <section class="hero">
-    <h1>Хуш омадед ба Mastchoh Shop!</h1>
-    <p>Маҳсулоти дӯстдоштаатонро ёбед, нархҳоро бинед ва ба сабад илова кунед. Барои фармоиш сабадро кушоед.</p>
+<main class="wrap">
+  <input
+    id="search"
+    class="search"
+    type="search"
+    placeholder="🔍 Молро ҷустуҷӯ кунед..."
+    aria-label="Ҷустуҷӯи мол"
+  >
+
+  <div class="categories" id="categories"></div>
+
+  <h2>🛒 Молҳои мо</h2>
+  <div class="products" id="products"></div>
+
+  <section class="cart" id="cart">
+    <h2>🛍️ Сабади харид</h2>
+    <div id="cartItems" class="empty">Сабад ҳоло холӣ аст.</div>
+    <div id="total" class="total">Ҳамагӣ: 0 сомонӣ</div>
   </section>
 
-  <div class="tools">
-    <input id="search" type="search" placeholder="🔎 Ҷустуҷӯи мол...">
-    <select id="category">
-      <option value="all">Ҳамаи категорияҳо</option>
-    </select>
-  </div>
+  <section class="checkout">
+    <h2>📦 Фармоиш додан</h2>
+    <form id="orderForm">
+      <label for="customerName">Ному насаб</label>
+      <input class="field" id="customerName" required
+        placeholder="Номи худро нависед">
 
-  <h2>Маҳсулот — <span id="productCount">0</span> мол</h2>
-  <section class="products" id="products"></section>
+      <label for="phone">Рақами телефони шумо</label>
+      <input class="field" id="phone" type="tel" required
+        placeholder="+992..." >
+
+      <label for="address">Суроғаи расонидан</label>
+      <textarea class="field" id="address" rows="3" required
+        placeholder="Ноҳия, деҳа ё суроғаи шумо"></textarea>
+
+      <button class="btn" type="submit">
+        📲 Фармоиш тавассути WhatsApp
+      </button>
+    </form>
+    <p style="font-size:13px;color:#66736b">
+      Пас аз пахш кардан, WhatsApp кушода мешавад.
+      Барои фиристодан паёмро дар WhatsApp тасдиқ кунед.
+    </p>
+  </section>
 </main>
 
-<footer>© <span id="year"></span> Mastchoh Shop</footer>
-
-<div class="overlay" id="overlay">
-  <section class="panel">
-    <div class="panelhead">
-      <h2>🛒 Сабади харид</h2>
-      <button class="close" id="closeCart">×</button>
-    </div>
-    <div id="cartItems"></div>
-    <div class="total"><span>Ҳамагӣ:</span><span id="total">0 сомонӣ</span></div>
-
-    <form id="checkout">
-      <label class="field"><span>Ному насаб</span><input id="customer" required placeholder="Номи шумо"></label>
-      <label class="field"><span>Рақами телефон</span><input id="phone" required type="tel" placeholder="+992 ..."></label>
-      <label class="field"><span>Суроғаи расондан</span><input id="address" required placeholder="Ноҳия ё маҳал"></label>
-      <p class="notice">Фармоиш дар WhatsApp кушода мешавад. Пеш аз фиристодан маълумотро санҷед.</p>
-      <button class="order" type="submit" style="width:100%">Фармоиш тавассути WhatsApp</button>
-    </form>
-  </section>
-</div>
+<footer>
+  © 2026 Мастчоҳ Шоп · Ҳамаи ҳуқуқҳо ҳифз шудаанд.
+</footer>
 
 <script>
-// Рақами WhatsApp-ро баъдтар иваз мекунем.
-// Танҳо рақамҳо, бе + ва фосила.
-// Намуна: 992XXXXXXXXX
-const WHATSAPP_NUMBER = "992XXXXXXXXX";
+  // Рақами WhatsApp-и мағоза
+  const WHATSAPP_NUMBER = "79964468762";
 
-// Молҳо ва нархҳои ин рӯйхат намунавӣ мебошанд.
-const productsData = [
- {id:1,name:"Зарядник Type-C",category:"Зарядник",price:25,emoji:"🔌",desc:"Зарядник барои телефони мувофиқ"},
- {id:2,name:"Кабели USB",category:"Кабел",price:15,emoji:"🔋",desc:"Кабели пуркунӣ"},
- {id:3,name:"Чехоли телефон",category:"Чехол",price:20,emoji:"📱",desc:"Барои моделҳои интихобшуда"},
- {id:4,name:"Шишаи муҳофизатӣ",category:"Шиша",price:10,emoji:"🛡️",desc:"Муҳофизат барои экрани телефон"},
- {id:5,name:"Гӯшмонак",category:"Гӯшмонак",price:45,emoji:"🎧",desc:"Барои мусиқӣ ва занг"},
- {id:6,name:"Power Bank",category:"Power Bank",price:120,emoji:"🔋",desc:"Батареяи сайёр"},
- {id:7,name:"Дорандаи телефон",category:"Доранда",price:35,emoji:"📱",desc:"Барои истифодаи қулай"},
- {id:8,name:"Кроссовка",category:"Пойафзол",price:350,emoji:"👟",desc:"Барои истифодаи ҳаррӯза"}
-];
+  // Молҳо ва нархҳои намунавӣ — онҳоро метавонед иваз кунед
+  const productsData = [
+    { id: 1, name: "Зарядник Type-C", category: "Зарядник", price: 25, icon: "🔌" },
+    { id: 2, name: "Кабели USB", category: "Кабел", price: 15, icon: "🔗" },
+    { id: 3, name: "Чехоли телефон", category: "Чехол", price: 20, icon: "📱" },
+    { id: 4, name: "Шишаи муҳофизатӣ", category: "Шиша", price: 10, icon: "🛡️" },
+    { id: 5, name: "Гӯшмонак", category: "Гӯшмонак", price: 45, icon: "🎧" },
+    { id: 6, name: "Power Bank", category: "Power Bank", price: 120, icon: "🔋" },
+    { id: 7, name: "Дорандаи телефон", category: "Доранда", price: 35, icon: "📲" },
+    { id: 8, name: "Кроссовка", category: "Пойафзол", price: 350, icon: "👟" }
+  ];
 
-const cart = new Map();
-const $ = id => document.getElementById(id);
-const money = n => Number(n).toLocaleString("tg-TJ")+" сомонӣ";
-const safe = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  let cart = {};
+  let selectedCategory = "Ҳама";
 
-function setupCategories(){
- const cats=[...new Set(productsData.map(p=>p.category))];
- $("category").innerHTML='<option value="all">Ҳамаи категорияҳо</option>'+
- cats.map(c=>`<option value="${safe(c)}">${safe(c)}</option>`).join("");
-}
+  const productsEl = document.getElementById("products");
+  const categoriesEl = document.getElementById("categories");
+  const cartItemsEl = document.getElementById("cartItems");
+  const totalEl = document.getElementById("total");
+  const searchEl = document.getElementById("search");
 
-function showProducts(){
- const term=$("search").value.trim().toLocaleLowerCase();
- const cat=$("category").value;
- const list=productsData.filter(p=>
-  (cat==="all"||p.category===cat)&&
-  (p.name+" "+p.category+" "+p.desc).toLocaleLowerCase().includes(term)
- );
- $("productCount").textContent=list.length;
- $("products").innerHTML=list.length?list.map(p=>`
-  <article class="card">
-   <div class="photo">${p.emoji}</div>
-   <div class="body">
-    <div class="cat">${safe(p.category)}</div>
-    <div class="name">${safe(p.name)}</div>
-    <div class="desc">${safe(p.desc)}</div>
-    <div class="price">${money(p.price)}</div>
-    <button class="add" data-add="${p.id}">Ба сабад илова</button>
-   </div>
-  </article>`).join(""):'<div class="empty">Мол ёфт нашуд.</div>';
-}
+  function money(amount) {
+    return amount.toLocaleString("en-US") + " сомонӣ";
+  }
 
-function updateCart(){
- let count=0,total=0;
- for(const [id,qty] of cart){
-  const p=productsData.find(x=>x.id===id);
-  if(p){count+=qty;total+=p.price*qty;}
- }
- $("count").textContent=count;
- $("total").textContent=money(total);
- const rows=[...cart].map(([id,qty])=>({p:productsData.find(x=>x.id===id),qty})).filter(x=>x.p);
- $("cartItems").innerHTML=rows.length?rows.map(({p,qty})=>`
-  <div class="item">
-   <div><b>${safe(p.name)}</b><div class="desc">${money(p.price)} × ${qty}</div></div>
-   <div class="qty">
-    <button data-minus="${p.id}" type="button">−</button>
-    <b>${qty}</b>
-    <button data-plus="${p.id}" type="button">+</button>
-   </div>
-  </div>`).join(""):'<div class="empty">Сабад холӣ аст. Мол интихоб кунед.</div>';
-}
+  function renderCategories() {
+    const categories = ["Ҳама", ...new Set(
+      productsData.map(p => p.category)
+    )];
 
-$("products").addEventListener("click",e=>{
- const b=e.target.closest("[data-add]");
- if(!b)return;
- const id=Number(b.dataset.add);
- cart.set(id,(cart.get(id)||0)+1);
- updateCart();
- b.textContent="Илова шуд ✓";
- setTimeout(()=>{if(b.isConnected)b.textContent="Ба сабад илова";},800);
-});
+    categoriesEl.innerHTML = categories.map(category => `
+      <button
+        type="button"
+        class="${category === selectedCategory ? "active" : ""}"
+        data-category="${category}">
+        ${category}
+      </button>
+    `).join("");
 
-$("cartItems").addEventListener("click",e=>{
- const plus=e.target.closest("[data-plus]");
- const minus=e.target.closest("[data-minus]");
- if(plus){const id=Number(plus.dataset.plus);cart.set(id,(cart.get(id)||0)+1);}
- if(minus){const id=Number(minus.dataset.minus);const q=(cart.get(id)||0)-1;if(q<=0)cart.delete(id);else cart.set(id,q);}
- updateCart();
-});
+    categoriesEl.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedCategory = button.dataset.category;
+        renderCategories();
+        renderProducts();
+      });
+    });
+  }
 
-$("openCart").onclick=()=>{$("overlay").classList.add("open");updateCart();};
-$("closeCart").onclick=()=> $("overlay").classList.remove("open");
-$("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))$("overlay").classList.remove("open");});
-$("search").addEventListener("input",showProducts);
-$("category").addEventListener("change",showProducts);
+  function renderProducts() {
+    const query = searchEl.value.trim().toLowerCase();
 
-$("checkout").addEventListener("submit",e=>{
- e.preventDefault();
- if(!cart.size){alert("Сабад холӣ аст!");return;}
- if(WHATSAPP_NUMBER.includes("X")){
-  alert("Рақами WhatsApp-и мағозаро дар коди WHATSAPP_NUMBER ворид кардан лозим аст.");
-  return;
- }
- let total=0;
- const lines=[];
- for(const [id,qty] of cart){
-  const p=productsData.find(x=>x.id===id);
-  if(p){total+=p.price*qty;lines.push(`${p.name}: ${qty} x ${p.price} = ${p.price*qty} сомонӣ`);}
- }
- const message=[
-  "Салом! Фармоиш аз Mastchoh Shop:",
-  ...lines,
-  "Ҳамагӣ: "+total+" сомонӣ",
-  "Ном: "+$("customer").value,
-  "Телефон: "+$("phone").value,
-  "Суроға: "+$("address").value
- ].join("\n");
- window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message),"_blank");
-});
+    const filtered = productsData.filter(p => {
+      const matchesCategory =
+        selectedCategory === "Ҳама" ||
+        p.category === selectedCategory;
+      const matchesSearch =
+        (p.name + " " + p.category).toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
 
-$("year").textContent=new Date().getFullYear();
-setupCategories();
-showProducts();
-updateCart();
+    if (!filtered.length) {
+      productsEl.innerHTML = '<p class="empty">Мол ёфт нашуд.</p>';
+      return;
+    }
+
+    productsEl.innerHTML = filtered.map(p => `
+      <article class="product">
+        <div class="photo">${p.icon}</div>
+        <h3>${p.name}</h3>
+        <div class="price">${money(p.price)}</div>
+        <button class="btn" type="button" data-add="${p.id}">
+          ➕ Ба сабад
+        </button>
+      </article>
+    `).join("");
+
+    productsEl.querySelectorAll("[data-add]").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = Number(button.dataset.add);
+        cart[id] = (cart[id] || 0) + 1;
+        renderCart();
+      });
+    });
+  }
+
+  function renderCart() {
+    const items = productsData.filter(p => cart[p.id] > 0);
+
+    if (!items.length) {
+      cartItemsEl.innerHTML =
+        '<p class="empty">Сабад ҳоло холӣ аст.</p>';
+    } else {
+      cartItemsEl.innerHTML = items.map(p => `
+        <div class="cart-row">
+          <div>
+            <strong>${p.name}</strong><br>
+            <small>${money(p.price)} × ${cart[p.id]}</small>
+          </div>
+          <div class="qty">
+            <button type="button" data-minus="${p.id}">−</button>
+            <span>${cart[p.id]}</span>
+            <button type="button" data-plus="${p.id}">+</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    const total = items.reduce(
+      (sum, p) => sum + p.price * cart[p.id], 0
+    );
+    totalEl.textContent = "Ҳамагӣ: " + money(total);
+
+    cartItemsEl.querySelectorAll("[data-minus]").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = Number(button.dataset.minus);
+        cart[id]--;
+        if (cart[id] <= 0) delete cart[id];
+        renderCart();
+      });
+    });
+
+    cartItemsEl.querySelectorAll("[data-plus]").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = Number(button.dataset.plus);
+        cart[id]++;
+        renderCart();
+      });
+    });
+  }
+
+  searchEl.addEventListener("input", renderProducts);
+
+  document.getElementById("orderForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const items = productsData.filter(p => cart[p.id] > 0);
+    if (!items.length) {
+      alert("Аввал ба сабад мол илова кунед.");
+      document.getElementById("cart").scrollIntoView();
+      return;
+    }
+
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+
+    const orderLines = items.map(p =>
+      `• ${p.name} — ${cart[p.id]} дона × ${p.price} = ${p.price * cart[p.id]} сомонӣ`
+    );
+
+    const total = items.reduce(
+      (sum, p) => sum + p.price * cart[p.id], 0
+    );
+
+    const message = [
+      "Салом! Ман аз Мастчоҳ Шоп фармоиш медиҳам.",
+      "",
+      "Молҳо:",
+      ...orderLines,
+      "",
+      "Ҳамагӣ: " + total + " сомонӣ",
+      "",
+      "Ном: " + name,
+      "Телефон: " + phone,
+      "Суроға: " + address
+    ].join("\n");
+
+    const url = "https://wa.me/" + WHATSAPP_NUMBER +
+      "?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank");
+  });
+
+  renderCategories();
+  renderProducts();
+  renderCart();
 </script>
 </body>
 </html>
