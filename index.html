@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="tg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#166534">
+  <title>Mastchoh Shop — Мағозаи онлайн</title>
+  <style>
+    :root { --green:#166534; --green2:#15803d; --ink:#17211b; --muted:#647067; --bg:#f5f7f5; --line:#e2e8e3; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:var(--bg); }
+    header { background:var(--green); color:#fff; padding:20px max(16px, calc((100% - 1120px)/2)); }
+    .top { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+    .brand { font-size:clamp(23px,4vw,32px); font-weight:800; letter-spacing:-.5px; }
+    .tagline { color:#d9fbe2; margin-top:3px; font-size:14px; }
+    .cart-pill { border:1px solid #ffffff70; background:#ffffff18; color:white; padding:10px 14px; border-radius:999px; font-weight:700; }
+    main { max-width:1120px; margin:auto; padding:24px 16px 48px; }
+    .hero { background:linear-gradient(120deg,#dcfce7,#f0fdf4); border:1px solid #bbf7d0; border-radius:20px; padding:24px; margin-bottom:22px; }
+    .hero h1 { margin:0 0 8px; font-size:clamp(25px,5vw,38px); }
+    .hero p { margin:0; color:#355640; line-height:1.6; }
+    .tools { display:flex; gap:10px; flex-wrap:wrap; margin:18px 0; }
+    input,select,button { font:inherit; }
+    .search { flex:1 1 220px; min-width:0; }
+    .tools input,.tools select,.admin-form input,.admin-form select { width:100%; border:1px solid #cbd5cd; background:#fff; border-radius:11px; padding:12px 13px; color:var(--ink); }
+    .tools select { flex:0 1 190px; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:24px 0 12px; }
+    h2 { margin:0; font-size:22px; }
+    .muted { color:var(--muted); font-size:14px; }
+    .products { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; min-width:0; box-shadow:0 2px 7px #12201508; }
+    .card img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; background:#e8eee9; }
+    .card-body { padding:13px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .category { color:var(--green2); font-size:12px; font-weight:750; text-transform:uppercase; letter-spacing:.4px; }
+    .card h3 { font-size:16px; margin:0; overflow-wrap:anywhere; }
+    .price { font-size:19px; font-weight:800; margin-top:auto; }
+    .btn { border:0; background:var(--green); color:#fff; border-radius:10px; padding:11px 13px; font-weight:750; cursor:pointer; }
+    .btn:hover { background:#14532d; }
+    .btn.secondary { color:var(--green); background:#dcfce7; }
+    .btn.danger { background:#fee2e2; color:#991b1b; padding:7px 10px; }
+    .empty { background:#fff; border:1px dashed #b8c5bb; padding:28px; text-align:center; border-radius:14px; color:var(--muted); grid-column:1/-1; }
+    details.admin { margin-top:28px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:17px; }
+    details summary { font-weight:800; cursor:pointer; }
+    .admin-note { color:var(--muted); font-size:13px; line-height:1.5; margin:10px 0 14px; }
+    .admin-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .admin-form .wide { grid-column:1/-1; }
+    .admin-form label { display:block; font-size:13px; font-weight:700; margin-bottom:5px; }
+    .admin-form button { align-self:end; }
+    .cart-box { margin-top:22px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:17px; }
+    .cart-row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+    .cart-row:last-child { border-bottom:0; }
+    footer { text-align:center; padding:22px 16px; color:var(--muted); font-size:13px; }
+    @media(max-width:850px) { .products { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media(max-width:600px) { main { padding:16px 12px 35px; } .products { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; } .card-body { padding:10px; } .card h3 { font-size:14px; } .price { font-size:17px; } .hero { padding:19px; } .admin-form { grid-template-columns:1fr; } .admin-form .wide { grid-column:auto; } }
+    @media(max-width:360px) { .products { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div>
+        <div class="brand">🛍️ Mastchoh Shop</div>
+        <div class="tagline">Мағозаи онлайни шумо</div>
+      </div>
+      <div class="cart-pill">🛒 Сабад: <span id="cart-count">0</span></div>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Хуш омадед ба Mastchoh Shop!</h1>
+      <p>Маҳсулоти дӯстдоштаатонро ёбед. Акс, нарх ва маълумоти молро бинед ва ба сабад илова кунед.</p>
+    </section>
+
+    <div class="tools">
+      <div class="search"><input id="search" type="search" placeholder="🔎 Ҷустуҷӯи мол..." aria-label="Ҷустуҷӯи мол"></div>
+      <select id="category" aria-label="Категория">
+        <option value="all">Ҳамаи категорияҳо</option>
+        <option value="Либос">Либос</option>
+        <option value="Техника">Техника</option>
+        <option value="Пойафзол">Пойафзол</option>
+        <option value="Хона">Барои хона</option>
+        <option value="Дигар">Дигар</option>
+      </select>
+    </div>
+
+    <div class="section-head">
+      <h2>Маҳсулот</h2><span class="muted" id="product-count"></span>
+    </div>
+    <section class="products" id="products" aria-live="polite"></section>
+
+    <section class="cart-box">
+      <div class="section-head" style="margin-top:0">
+        <h2>🛒 Сабади харид</h2><button class="btn secondary" id="clear-cart" type="button">Холӣ кардан</button>
+      </div>
+      <div id="cart-items" class="muted">Ҳоло сабад холӣ аст.</div>
+      <div class="section-head"><strong>Ҳамагӣ:</strong><strong id="cart-total">0 сомонӣ</strong></div>
+      <button class="btn" id="order-btn" type="button">Фармоиш додан</button>
+      <p class="muted">Ин версия фармоишро дар ҳамин браузер нишон медиҳад; пардохти онлайн ҳоло пайваст нест.</p>
+    </section>
+
+    <details class="admin">
+      <summary>⚙️ Илова кардани маҳсулоти нав</summary>
+      <p class="admin-note">Номи мол, нарх ва пайванди акси онро ворид кунед. Маҳсулоти нав дар ҳамин браузер нигоҳ дошта мешавад. Барои акси худатон, аввал онро ба интернет бор карда, пайванди мустақимро гузоред.</p>
+      <form id="admin-form" class="admin-form">
+        <div><label for="new-name">Номи мол</label><input id="new-name" required maxlength="80" placeholder="Масалан: Ҷузвдон"></div>
+        <div><label for="new-price">Нарх (сомонӣ)</label><input id="new-price" type="number" min="0" step="0.01" required placeholder="150"></div>
+        <div><label for="new-category">Категория</label><select id="new-category"><option>Либос</option><option>Техника</option><option>Пойафзол</option><option>Хона</option><option selected>Дигар</option></select></div>
+        <div><label for="new-image">Пайванди акси мол</label><input id="new-image" type="url" placeholder="https://..."></div>
+        <div class="wide"><label for="new-description">Тавсифи кӯтоҳ (ихтиёрӣ)</label><input id="new-description" maxlength="180" placeholder="Ранг, андоза ё маълумоти дигар"></div>
+        <button class="btn wide" type="submit">Илова кардани мол</button>
+      </form>
+    </details>
+  </main>
+  <footer>© <span id="year"></span> Mastchoh Shop · Бо ❤️ сохта шудааст</footer>
+
+  <script>
+    const starterProducts = [
+      {id:1,name:"Кроссовкаи варзишӣ",price:350,category:"Пойафзол",description:"Барои истифодаи ҳаррӯза",image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"},
+      {id:2,name:"Соати дастӣ",price:280,category:"Дигар",description:"Тарҳи замонавӣ",image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80"},
+      {id:3,name:"Гӯшмонак",price:220,category:"Техника",description:"Барои мусиқӣ ва зангҳо",image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80"},
+      {id:4,name:"Ҷузвдони шаҳрӣ",price:190,category:"Дигар",description:"Барои мактаб ё сафар",image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"},
+      {id:5,name:"Айнаки офтобӣ",price:120,category:"Дигар",description:"Содда ва зебо",image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=80"},
+      {id:6,name:"Куртаи ҳаррӯза",price:300,category:"Либос",description:"Либоси роҳат",image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80"},
+      {id:7,name:"Чароғи мизӣ",price:160,category:"Хона",description:"Барои хона ё идора",image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=80"},
+      {id:8,name:"Телефон",price:2400,category:"Техника",description:"Намунаи маҳсулот — нархро тағйир диҳед",image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80"}
+    ];
+    const money = n => `${Number(n).toLocaleString("ru-RU")} сомонӣ`;
+    let products = JSON.parse(localStorage.getItem("mshop-products") || "null") || starterProducts;
+    let cart = JSON.parse(localStorage.getItem("mshop-cart") || "[]");
+    const $ = id => document.getElementById(id);
+    const save = () => { localStorage.setItem("mshop-products", JSON.stringify(products)); localStorage.setItem("mshop-cart", JSON.stringify(cart)); };
+    const safe = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    function renderProducts() {
+      const q = $("search").value.trim().toLowerCase(), cat = $("category").value;
+      const shown = products.filter(p => (cat === "all" || p.category === cat) && (p.name+" "+p.description+" "+p.category).toLowerCase().includes(q));
+      $("product-count").textContent = `${shown.length} мол`;
+      $("products").innerHTML = shown.length ? shown.map(p => `<article class="card">
+        <img src="${safe(p.image || "")}" alt="${safe(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23e8eee9%22/%3E%3Ctext x=%22200%22 y=%22210%22 font-size=%2270%22 text-anchor=%22middle%22%3E📦%3C/text%3E%3C/svg%3E'">
+        <div class="card-body"><span class="category">${safe(p.category)}</span><h3>${safe(p.name)}</h3><div class="muted">${safe(p.description || "")}</div><div class="price">${money(p.price)}</div>
+        <button class="btn" onclick="addToCart(${Number(p.id)})">Ба сабад илова кун</button>
+        ${p.custom ? `<button class="btn danger" onclick="removeProduct(${Number(p.id)})">Нест кардан</button>` : ""}
+        </div></article>`).join("") : `<div class="empty">Маҳсулот ёфт нашуд. Калимаи дигарро ҷустуҷӯ кунед.</div>`;
+    }
+    function renderCart() {
+      const count = cart.reduce((s,i)=>s+i.qty,0), total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      $("cart-count").textContent = count; $("cart-total").textContent = money(total);
+      $("cart-items").innerHTML = cart.length ? cart.map(i=>`<div class="cart-row"><div><strong>${safe(i.name)}</strong><div class="muted">${money(i.price)} × ${i.qty}</div></div><div style="display:flex;gap:6px;align-items:center"><button class="btn secondary" onclick="changeQty(${i.id},-1)" aria-label="Кам кардан">−</button><button class="btn secondary" onclick="changeQty(${i.id},1)" aria-label="Зиёд кардан">+</button></div></div>`).join("") : "Ҳоло сабад холӣ аст.";
+      save();
+    }
+    window.addToCart = id => { const p=products.find(x=>x.id===id); if(!p)return; const item=cart.find(x=>x.id===id); item?item.qty++:cart.push({id:p.id,name:p.name,price:Number(p.price),qty:1}); renderCart(); };
+    window.changeQty = (id,delta) => { const i=cart.find(x=>x.id===id); if(!i)return; i.qty+=delta; if(i.qty<=0)cart=cart.filter(x=>x.id!==id); renderCart(); };
+    window.removeProduct = id => { if(!confirm("Ин молро нест мекунед?"))return; products=products.filter(p=>p.id!==id); cart=cart.filter(p=>p.id!==id); save(); renderProducts(); renderCart(); };
+    $("search").addEventListener("input",renderProducts); $("category").addEventListener("change",renderProducts);
+    $("clear-cart").addEventListener("click",()=>{cart=[];renderCart();});
+    $("order-btn").addEventListener("click",()=>{ if(!cart.length){alert("Аввал молро ба сабад илова кунед.");return;} const lines=cart.map(i=>`${i.name} — ${i.qty} дона = ${money(i.price*i.qty)}`).join("\\n"); alert("Фармоиши намунавӣ:\\n"+lines+"\\nҲамагӣ: "+money(cart.reduce((s,i)=>s+i.price*i.qty,0))+"\\n\\nБарои қабули фармоиши воқеӣ бояд рақами телефон ё WhatsApp пайваст карда шавад."); });
+    $("admin-form").addEventListener("submit",e=>{ e.preventDefault(); const name=$("new-name").value.trim(), price=Number($("new-price").value), image=$("new-image").value.trim(); if(!name||!Number.isFinite(price)||price<0){alert("Ном ва нархи дурустро ворид кунед.");return;} products.unshift({id:Date.now(),name,price,category:$("new-category").value,image,description:$("new-description").value.trim(),custom:true}); save(); e.target.reset(); $("new-category").value="Дигар"; renderProducts(); alert("Маҳсулот илова шуд!"); });
+    $("year").textContent = new Date().getFullYear();
+    renderProducts(); renderCart();
+  </script>
+</body>
+</html>
