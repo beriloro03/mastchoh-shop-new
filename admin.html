@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mastchoh Shop — Панели маъмур</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0fdf4;
+      margin: 0;
+      padding: 20px;
+    }
+    main {
+      max-width: 480px;
+      margin: 20px auto;
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #0001;
+    }
+    h2 { color: #087f5b; }
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px;
+      margin: 7px 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input { border: 1px solid #ccc; }
+    button {
+      background: #087f5b;
+      color: white;
+      border: 0;
+      font-weight: bold;
+    }
+    #panel { display: none; }
+    #status { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+<main>
+  <h2>🛍️ Mastchoh Shop</h2>
+  <h3>Панели маъмур</h3>
+
+  <section id="login">
+    <input id="email" type="email"
+      placeholder="Почтаи электронии маъмур">
+    <input id="password" type="password"
+      placeholder="Парол" autocomplete="current-password">
+    <button id="loginBtn">Ворид шудан</button>
+  </section>
+
+  <section id="panel">
+    <p>Моли нав илова кунед</p>
+    <input id="name" placeholder="Номи мол">
+    <input id="price" type="number" min="1"
+      placeholder="Нарх бо сомонӣ">
+    <input id="category" placeholder="Категория, масалан chargers">
+    <input id="image" type="url"
+      placeholder="Пайванди акси мол (URL)">
+    <button id="addBtn">Илова кардани мол</button>
+    <button id="logoutBtn">Баромадан</button>
+  </section>
+
+  <p id="status" role="status"></p>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-xxtLfEmtBfe0",
+  authDomain: "mastchoh-shop-4a490.firebaseapp.com",
+  projectId: "mastchoh-shop-4a490",
+  storageBucket: "mastchoh-shop-4a490.firebasestorage.app",
+  messagingSenderId: "948589793868",
+  appId: "1:948589793868:web:cc2050951f2d452a0b5ae9"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+const adminUID = "fpry8BO43fNPvnbmwymfZ6QMS9f2";
+
+const status = document.getElementById("status");
+const login = document.getElementById("login");
+const panel = document.getElementById("panel");
+
+auth.onAuthStateChanged(user => {
+  if (user && user.uid === adminUID) {
+    login.style.display = "none";
+    panel.style.display = "block";
+    status.textContent = "Шумо ҳамчун маъмур ворид шудед.";
+  } else {
+    panel.style.display = "none";
+    login.style.display = "block";
+    if (user) {
+      auth.signOut();
+      status.textContent = "Ин ҳисоб иҷозати маъмур надорад.";
+    }
+  }
+});
+
+document.getElementById("loginBtn").onclick = async () => {
+  try {
+    await auth.signInWithEmailAndPassword(
+      document.getElementById("email").value.trim(),
+      document.getElementById("password").value
+    );
+  } catch (e) {
+    status.textContent = "Ворид нашуд. Почта ва паролро санҷед.";
+  }
+};
+
+document.getElementById("addBtn").onclick = async () => {
+  const user = auth.currentUser;
+  if (!user || user.uid !== adminUID) {
+    status.textContent = "Иҷозат дода нашуд.";
+    return;
+  }
+
+  const name = document.getElementById("name").value.trim();
+  const price = Number(document.getElementById("price").value);
+  const category = document.getElementById("category").value.trim();
+  const image = document.getElementById("image").value.trim();
+
+  if (!name || !category || !Number.isFinite(price) ||
+      price <= 0 || !Number.isInteger(price)) {
+    status.textContent = "Номи мол, категория ва нархи дурустро ворид кунед.";
+    return;
+  }
+
+  if (image) {
+    try {
+      const u = new URL(image);
+      if (u.protocol !== "https:") throw new Error();
+    } catch {
+      status.textContent = "Пайванди акс бояд бо https:// сар шавад.";
+      return;
+    }
+  }
+
+  try {
+    await db.collection("products").add({
+      name: name,
+      price: price,
+      category: category,
+      image: image,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    status.textContent = "Мол ба пойгоҳи додаҳо илова шуд!";
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("image").value = "";
+  } catch (e) {
+    status.textContent = "Хато ҳангоми илова. Танзимоти Firebase ва иҷозатҳоро санҷед.";
+  }
+};
+
+document.getElementById("logoutBtn").onclick = () => auth.signOut();
+</script>
+</body>
+</html>
