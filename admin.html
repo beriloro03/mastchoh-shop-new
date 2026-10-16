@@ -10,34 +10,53 @@
       font-family: Arial, sans-serif;
       background: #f0fdf4;
       margin: 0;
-      padding: 20px;
+      padding: 14px;
+      color: #222;
     }
     main {
-      max-width: 480px;
-      margin: 20px auto;
+      max-width: 600px;
+      margin: 15px auto;
       background: white;
-      padding: 22px;
+      padding: 18px;
       border-radius: 14px;
       box-shadow: 0 2px 12px #0001;
     }
-    h2 { color: #087f5b; }
-    input, button {
+    h2, h3 { color: #087f5b; }
+    input, button, select {
       width: 100%;
       box-sizing: border-box;
-      padding: 13px;
-      margin: 7px 0;
+      padding: 12px;
+      margin: 6px 0;
       border-radius: 8px;
       font-size: 16px;
     }
-    input { border: 1px solid #ccc; }
+    input, select { border: 1px solid #ccc; }
     button {
       background: #087f5b;
       color: white;
       border: 0;
       font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; }
+    .cancel { background: #64748b; }
+    .delete { background: #c62828; }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      margin: 12px 0;
+      overflow-wrap: anywhere;
+    }
+    .product img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
     }
     #panel { display: none; }
-    #status { white-space: pre-wrap; }
+    #status { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .hint { color: #555; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -47,25 +66,51 @@
 
   <section id="login">
     <input id="email" type="email"
-      placeholder="Почтаи электронии маъмур">
+      placeholder="Почтаи электронии маъмур"
+      autocomplete="username">
     <input id="password" type="password"
       placeholder="Парол" autocomplete="current-password">
     <button id="loginBtn">Ворид шудан</button>
   </section>
 
   <section id="panel">
-    <p>Моли нав илова кунед</p>
+    <h3 id="formTitle">➕ Илова кардани моли нав</h3>
+
     <input id="name" placeholder="Номи мол">
-    <input id="price" type="number" min="1"
+    <input id="price" type="number" min="1" step="1"
       placeholder="Нарх бо сомонӣ">
-    <input id="category" placeholder="Категория, масалан chargers">
+
+    <select id="category">
+      <option value="">Категорияро интихоб кунед</option>
+      <option value="chargers">Зарядник</option>
+      <option value="cables">Кабел</option>
+      <option value="cases">Чехол</option>
+      <option value="glass">Шишаи муҳофизатӣ</option>
+      <option value="audio">Гӯшмонак / Колонка</option>
+      <option value="power">Power Bank</option>
+      <option value="holders">Дорандаи телефон</option>
+      <option value="shoes">Пойафзол</option>
+      <option value="other">Дигар молҳо</option>
+    </select>
+
     <input id="image" type="url"
       placeholder="Пайванди акси мол (URL)">
-    <button id="addBtn">Илова кардани мол</button>
-    <button id="logoutBtn">Баромадан</button>
+    <p class="hint">Пайванди акс бояд бо https:// сар шавад. Агар акс надошта бошед, майдонро холӣ гузоред.</p>
+
+    <button id="saveBtn">Илова кардани мол</button>
+    <button id="cancelBtn" class="cancel" hidden>
+      Бекор кардани таҳрир
+    </button>
+
+    <hr>
+    <h3>📦 Молҳои мағоза</h3>
+    <p id="count">Молҳо бор шуда истодаанд...</p>
+    <div id="products"></div>
+
+    <button id="logoutBtn" class="cancel">Баромадан</button>
   </section>
 
-  <p id="status" role="status"></p>
+  <p id="status" role="status" aria-live="polite"></p>
 </main>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -88,84 +133,227 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const adminUID = "fpry8BO43fNPvnbmwymfZ6QMS9f2";
 
-const status = document.getElementById("status");
-const login = document.getElementById("login");
-const panel = document.getElementById("panel");
+const $ = id => document.getElementById(id);
+let editingId = null;
+let unsubscribeProducts = null;
+
+function message(text) {
+  $("status").textContent = text;
+}
+
+function resetForm() {
+  editingId = null;
+  $("name").value = "";
+  $("price").value = "";
+  $("category").value = "";
+  $("image").value = "";
+  $("formTitle").textContent = "➕ Илова кардани моли нав";
+  $("saveBtn").textContent = "Илова кардани мол";
+  $("cancelBtn").hidden = true;
+}
+
+function stopProductsListener() {
+  if (unsubscribeProducts) {
+    unsubscribeProducts();
+    unsubscribeProducts = null;
+  }
+}
+
+function makeButton(text, className, action) {
+  const btn = document.createElement("button");
+  btn.textContent = text;
+  if (className) btn.className = className;
+  btn.type = "button";
+  btn.addEventListener("click", action);
+  return btn;
+}
+
+function showProducts(snapshot) {
+  const list = $("products");
+  list.replaceChildren();
+  $("count").textContent = "Ҳамагӣ: " + snapshot.size + " мол";
+
+  if (snapshot.empty) {
+    list.textContent = "Ҳоло мол илова нашудааст.";
+    return;
+  }
+
+  snapshot.forEach(doc => {
+    const p = doc.data();
+    const card = document.createElement("div");
+    card.className = "product";
+
+    if (p.image && /^https:\/\//i.test(p.image)) {
+      const img = document.createElement("img");
+      img.src = p.image;
+      img.alt = p.name || "Акси мол";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      img.onerror = () => img.remove();
+      card.appendChild(img);
+    }
+
+    const name = document.createElement("h3");
+    name.textContent = p.name || "Бе ном";
+    card.appendChild(name);
+
+    const price = document.createElement("p");
+    price.textContent = "Нарх: " + (p.price ?? "—") + " сомонӣ";
+    card.appendChild(price);
+
+    const category = document.createElement("p");
+    category.textContent = "Категория: " + (p.category || "—");
+    card.appendChild(category);
+
+    card.appendChild(makeButton("✏️ Таҳрир", "", () => {
+      editingId = doc.id;
+      $("name").value = p.name || "";
+      $("price").value = p.price ?? "";
+      $("category").value = p.category || "";
+      $("image").value = p.image || "";
+      $("formTitle").textContent = "✏️ Таҳрири мол";
+      $("saveBtn").textContent = "Сабти тағйирот";
+      $("cancelBtn").hidden = false;
+      message("Маълумоти молро тағйир диҳед.");
+      window.scrollTo(0, 0);
+    }));
+
+    card.appendChild(makeButton("🗑️ Нест кардани мол", "delete", async () => {
+      if (!confirm('Моли "' + (p.name || "бе ном") + '" нест карда шавад?')) {
+        return;
+      }
+      try {
+        const user = auth.currentUser;
+        if (!user || user.uid !== adminUID) {
+          message("Иҷозат дода нашуд.");
+          return;
+        }
+        await db.collection("products").doc(doc.id).delete();
+        if (editingId === doc.id) resetForm();
+        message("Мол нест карда шуд.");
+      } catch (e) {
+        console.error(e);
+        message("Нест нашуд. Қоидаҳои Firestore-ро санҷед.");
+      }
+    }));
+
+    list.appendChild(card);
+  });
+}
+
+function startProductsListener() {
+  stopProductsListener();
+  $("count").textContent = "Молҳо бор шуда истодаанд...";
+
+  unsubscribeProducts = db.collection("products")
+    .orderBy("createdAt", "desc")
+    .onSnapshot(snapshot => {
+      showProducts(snapshot);
+    }, error => {
+      console.error(error);
+      message("Рӯйхати молҳо кушода нашуд. Интернет ва иҷозатҳои Firestore-ро санҷед.");
+    });
+}
 
 auth.onAuthStateChanged(user => {
+  stopProductsListener();
+  resetForm();
+
   if (user && user.uid === adminUID) {
-    login.style.display = "none";
-    panel.style.display = "block";
-    status.textContent = "Шумо ҳамчун маъмур ворид шудед.";
+    $("login").style.display = "none";
+    $("panel").style.display = "block";
+    message("Шумо ҳамчун маъмур ворид шудед.");
+    startProductsListener();
   } else {
-    panel.style.display = "none";
-    login.style.display = "block";
+    $("panel").style.display = "none";
+    $("login").style.display = "block";
+
     if (user) {
+      message("Ин ҳисоб иҷозати маъмур надорад.");
       auth.signOut();
-      status.textContent = "Ин ҳисоб иҷозати маъмур надорад.";
     }
   }
 });
 
-document.getElementById("loginBtn").onclick = async () => {
+$("loginBtn").onclick = async () => {
   try {
+    message("Ворид шуда истодаед...");
     await auth.signInWithEmailAndPassword(
-      document.getElementById("email").value.trim(),
-      document.getElementById("password").value
+      $("email").value.trim(),
+      $("password").value
     );
+    $("password").value = "";
   } catch (e) {
-    status.textContent = "Ворид нашуд. Почта ва паролро санҷед.";
+    console.error(e);
+    message("Ворид нашуд. Почта, парол ва интернетро санҷед.");
   }
 };
 
-document.getElementById("addBtn").onclick = async () => {
+$("saveBtn").onclick = async () => {
   const user = auth.currentUser;
+
   if (!user || user.uid !== adminUID) {
-    status.textContent = "Иҷозат дода нашуд.";
+    message("Иҷозат дода нашуд.");
     return;
   }
 
-  const name = document.getElementById("name").value.trim();
-  const price = Number(document.getElementById("price").value);
-  const category = document.getElementById("category").value.trim();
-  const image = document.getElementById("image").value.trim();
+  const name = $("name").value.trim();
+  const price = Number($("price").value);
+  const category = $("category").value;
+  const image = $("image").value.trim();
 
-  if (!name || !category || !Number.isFinite(price) ||
-      price <= 0 || !Number.isInteger(price)) {
-    status.textContent = "Номи мол, категория ва нархи дурустро ворид кунед.";
+  if (!name || !category || !Number.isInteger(price) || price <= 0) {
+    message("Номи мол, категория ва нархи дурустро ворид кунед.");
     return;
   }
 
   if (image) {
     try {
-      const u = new URL(image);
-      if (u.protocol !== "https:") throw new Error();
+      const url = new URL(image);
+      if (url.protocol !== "https:") throw new Error();
     } catch {
-      status.textContent = "Пайванди акс бояд бо https:// сар шавад.";
+      message("Пайванди акс бояд дуруст бошад ва бо https:// сар шавад.");
       return;
     }
   }
 
-  try {
-    await db.collection("products").add({
-      name: name,
-      price: price,
-      category: category,
-      image: image,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+  const btn = $("saveBtn");
+  btn.disabled = true;
 
-    status.textContent = "Мол ба пойгоҳи додаҳо илова шуд!";
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("image").value = "";
+  try {
+    const data = { name, price, category, image };
+
+    if (editingId) {
+      await db.collection("products").doc(editingId).update(data);
+      message("Тағйироти мол сабт шуд!");
+    } else {
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection("products").add(data);
+      message("Мол ба пойгоҳи додаҳо илова шуд!");
+    }
+
+    resetForm();
   } catch (e) {
-    status.textContent = "Хато ҳангоми илова. Танзимоти Firebase ва иҷозатҳоро санҷед.";
+    console.error(e);
+    message("Хато ҳангоми сабт. Интернет ва қоидаҳои Firestore-ро санҷед.");
+  } finally {
+    btn.disabled = false;
   }
 };
 
-document.getElementById("logoutBtn").onclick = () => auth.signOut();
+$("cancelBtn").onclick = () => {
+  resetForm();
+  message("Таҳрир бекор карда шуд.");
+};
+
+$("logoutBtn").onclick = async () => {
+  try {
+    await auth.signOut();
+    message("Шумо аз ҳисоб баромадед.");
+  } catch (e) {
+    message("Баромадан муваффақ нашуд.");
+  }
+};
 </script>
 </body>
 </html>
