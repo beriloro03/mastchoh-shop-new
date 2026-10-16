@@ -4,111 +4,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Мудирияти Mastchoh Shop</title>
+  <title>Маъмур — Mastchoh Shop</title>
+
   <style>
     * { box-sizing: border-box; }
     body {
-      margin: 0; padding: 16px;
+      margin: 0;
+      padding: 16px;
       font-family: Arial, sans-serif;
-      background: #f1f5f3; color: #17352b;
+      background: #f3f6f5;
+      color: #1f2937;
     }
-    .wrap { max-width: 700px; margin: auto; }
+    .container { max-width: 650px; margin: auto; }
+    h1 { color: #087f5b; text-align: center; }
     .card {
-      background: white; padding: 18px; margin-bottom: 16px;
-      border-radius: 16px; box-shadow: 0 3px 14px #0000000c;
+      background: white;
+      padding: 18px;
+      margin: 14px 0;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px #00000010;
     }
-    h1 { font-size: 24px; color: #087f5b; }
-    h2 { font-size: 19px; }
-    input, button, select {
-      width: 100%; padding: 13px; margin: 7px 0;
-      border: 1px solid #ccd8d1; border-radius: 9px;
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      border-radius: 8px;
       font-size: 16px;
     }
+    input { border: 1px solid #cbd5e1; }
     button {
-      background: #087f5b; color: white;
-      border: 0; font-weight: bold; cursor: pointer;
+      border: 0;
+      background: #087f5b;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
-    button.secondary { background: #52675e; }
-    button.danger { background: #c0392b; }
-    button:disabled { opacity: .55; }
-    .hidden { display: none !important; }
-    .msg { white-space: pre-wrap; line-height: 1.5; overflow-wrap: anywhere; }
+    button:disabled { opacity: .6; }
+    .secondary { background: #475569; }
+    .danger { background: #dc2626; }
     .product {
-      border: 1px solid #e0e8e3; border-radius: 12px;
-      padding: 12px; margin: 10px 0;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 0;
     }
-    .product img, #preview {
-      max-width: 100%; width: 150px; max-height: 160px;
-      object-fit: contain; border-radius: 8px;
+    .product img {
+      width: 85px;
+      height: 85px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #eee;
     }
-    .muted { color: #60736a; font-size: 14px; }
+    .details { flex: 1; min-width: 0; }
+    .details p { margin: 5px 0; overflow-wrap: anywhere; }
+    .actions { display: flex; gap: 6px; }
+    .actions button { font-size: 13px; padding: 9px 5px; }
+    #message { white-space: pre-wrap; }
+    .hidden { display: none; }
+    .hint { color: #64748b; font-size: 13px; line-height: 1.5; }
   </style>
 </head>
+
 <body>
-<div class="wrap">
+<div class="container">
   <h1>🛍️ Mastchoh Shop</h1>
-  <p class="muted">Панели идоракунии мағоза</p>
+  <h2 style="text-align:center">Панели маъмур</h2>
 
-  <section class="card" id="loginCard">
-    <h2>Воридшавии маъмур</h2>
-    <form id="loginForm">
-      <label for="email">Email</label>
-      <input id="email" type="email"
-        autocomplete="username" value="beriloro03@gmail.com" required>
+  <div class="card" id="loginCard">
+    <h3>Воридшавии маъмур</h3>
+    <input id="email" type="email"
+      placeholder="Email-и маъмур"
+      autocomplete="username">
+    <input id="password" type="password"
+      placeholder="Парол"
+      autocomplete="current-password">
+    <button id="loginBtn" onclick="login()">Ворид шудан</button>
+    <p class="hint">
+      Бо email ва пароли ҳисоби маъмури Firebase ворид шав.
+    </p>
+  </div>
 
-      <label for="password">Парол</label>
-      <input id="password" type="password"
-        autocomplete="current-password" required>
-
-      <button id="loginBtn" type="submit">Ворид шудан</button>
-    </form>
-    <p id="loginMsg" class="msg" role="status"></p>
-  </section>
-
-  <section id="adminArea" class="hidden">
+  <div id="panel" class="hidden">
     <div class="card">
-      <h2>Идоракунӣ</h2>
-      <p id="welcome"></p>
-      <button id="logoutBtn" class="secondary">Баромадан</button>
+      <p id="welcome">Шумо ворид шудед.</p>
+      <button class="secondary" onclick="logout()">Баромадан</button>
     </div>
 
     <div class="card">
-      <h2 id="formTitle">➕ Иловаи моли нав</h2>
+      <h3 id="formTitle">➕ Илова кардани мол</h3>
       <form id="productForm">
-        <label for="name">Номи мол</label>
-        <input id="name" maxlength="100" required
-          placeholder="Масалан: Зарядник Type-C">
+        <input id="name" type="text"
+          placeholder="Номи мол" required maxlength="100">
 
-        <label for="price">Нарх (сомонӣ)</label>
-        <input id="price" type="number" min="0" step="0.01"
-          required placeholder="25">
+        <input id="price" type="number"
+          placeholder="Нарх бо сомонӣ" required min="0" step="0.01">
 
-        <label for="category">Категория</label>
-        <input id="category" maxlength="60" required
-          placeholder="Масалан: chargers">
+        <input id="category" type="text"
+          placeholder="Категория (масалан: chargers)"
+          required maxlength="60">
 
-        <label for="imageFile">Акс аз галереяи телефон</label>
-        <input id="imageFile" type="file" accept="image/*">
-        <img id="preview" class="hidden" alt="Пешнамоиши акс">
-        <p class="muted">Акс пеш аз сабт хурд карда мешавад.</p>
+        <label for="photo">Акси мол:</label>
+        <input id="photo" type="file"
+          accept="image/*">
 
-        <label for="imageUrl">Ё пайванди акс (ихтиёрӣ)</label>
-        <input id="imageUrl" type="url"
-          placeholder="https://example.com/photo.jpg">
+        <img id="preview" class="hidden"
+          alt="Пешнамоиши акс"
+          style="width:150px;max-height:180px;object-fit:contain">
 
-        <button id="saveBtn" type="submit">Сабти мол</button>
-        <button id="cancelEdit" type="button"
-          class="secondary hidden">Бекор кардани таҳрир</button>
+        <p class="hint">
+          Акс пеш аз сабт хурд карда мешавад. Барои пешгирӣ аз хатои
+          маҳдудияти Firestore акси хурд интихоб кун.
+        </p>
+
+        <button id="saveBtn" type="submit">Сабт кардани мол</button>
+        <button type="button" class="secondary hidden"
+          id="cancelBtn" onclick="cancelEdit()">Бекор кардан</button>
       </form>
-      <p id="formMsg" class="msg" role="status"></p>
     </div>
 
     <div class="card">
-      <h2>📦 Молҳои мағоза</h2>
-      <p id="listMsg" class="msg"></p>
-      <div id="productsList"></div>
+      <h3>📦 Молҳои мағоза</h3>
+      <button class="secondary" onclick="loadProducts()">Навсозии рӯйхат</button>
+      <div id="products">Рӯйхат бор шуда истодааст...</div>
     </div>
-  </section>
+  </div>
+
+  <div class="card">
+    <p id="message" role="status">Барои идома ворид шав.</p>
+  </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -116,392 +140,364 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
-"use strict";
-
-// Танзимоти лоиҳаи мавҷудаи Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-XxtLfEmtBfe0",
-  authDomain: "mastchoh-shop-4a490.firebaseapp.com",
-  projectId: "mastchoh-shop-4a490",
-  storageBucket: "mastchoh-shop-4a490.firebasestorage.app",
-  messagingSenderId: "948589793868",
-  appId: "1:948589793868:web:cc2050951f2d452a0b5ae9"
-};
-
-// UID-и маъмури иҷозатдодашуда
-const ADMIN_UID = "fpry8BO43fNPvnbmwymfZ6QMS9f2";
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-const $ = id => document.getElementById(id);
-
-let editingId = null;
-let currentImage = "";
-let unsubscribeProducts = null;
-let busy = false;
-
-function show(id, visible) {
-  $(id).classList.toggle("hidden", !visible);
-}
-
-function explainError(error) {
-  const code = error && error.code ? error.code : "";
-  const messages = {
-    "auth/invalid-email":
-      "Email нодуруст аст. Суроғаи email-ро санҷед.",
-    "auth/invalid-credential":
-      "Email ё парол нодуруст аст. Пароли ҳисоби Firebase-ро санҷед.",
-    "auth/wrong-password":
-      "Парол нодуруст аст.",
-    "auth/user-not-found":
-      "Ин email дар ин лоиҳаи Firebase ёфт нашуд.",
-    "auth/too-many-requests":
-      "Кӯшишҳо зиёд шуданд. Каме интизор шавед ва боз санҷед.",
-    "auth/network-request-failed":
-      "Интернет ё пайвастшавӣ ба Firebase мушкил дорад.",
-    "auth/operation-not-allowed":
-      "Усули Email/Password дар Firebase фаъол нест.",
-    "permission-denied":
-      "Иҷозат рад шуд. Қоидаҳои Firestore-ро санҷед.",
-    "unavailable":
-      "Firebase муваққатан дастнорас аст. Интернетро санҷед."
+  // Танзимоти Firebase-и лоиҳаи Mastchoh Shop
+  const firebaseConfig = {
+    apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-XxtLfEmtBfe0",
+    authDomain: "mastchoh-shop-4a490.firebaseapp.com",
+    projectId: "mastchoh-shop-4a490",
+    storageBucket: "mastchoh-shop-4a490.firebasestorage.app",
+    messagingSenderId: "948589793868",
+    appId: "1:948589793868:web:cc2050951f2d452a0b5ae9"
   };
 
-  return (messages[code] || "Хатои Firebase. Код: " +
-    (code || "номаълум") + ". " +
-    (error && error.message ? error.message : ""))
-    .replace(/AIza[0-9A-Za-z_-]+/g, "[пинҳон]")
-    .replace(/[\r\n]+/g, " ");
-}
+  // UID-и маъмури иҷозатдодашуда
+  const ADMIN_UID = "fpry8BO43fNPvnbmwymfZ6QMS9f2";
 
-function setLoginMessage(message) {
-  $("loginMsg").textContent = message;
-}
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-function setFormMessage(message) {
-  $("formMsg").textContent = message;
-}
+  let editingId = null;
+  let currentImage = "";
+  let busy = false;
 
-function setBusy(value) {
-  busy = value;
-  $("loginBtn").disabled = value;
-  $("saveBtn").disabled = value;
-}
+  const $ = id => document.getElementById(id);
 
-$("loginForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  if (busy) return;
-
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) {
-    setLoginMessage("Email ва паролро пур кунед.");
-    return;
+  function showMessage(message, error = false) {
+    $("message").textContent = message;
+    $("message").style.color = error ? "#b91c1c" : "#087f5b";
   }
 
-  setBusy(true);
-  setLoginMessage("Дар ҳоли санҷиши воридшавӣ...");
+  function friendlyError(error) {
+    const code = error && error.code ? error.code : "";
+    const messages = {
+      "auth/api-key-not-valid":
+        "Калиди API нодуруст аст. apiKey-ро аз Firebase Console санҷ.",
+      "auth/invalid-api-key":
+        "Калиди API нодуруст аст. apiKey-ро аз Firebase Console санҷ.",
+      "auth/invalid-credential":
+        "Email ё парол нодуруст аст.",
+      "auth/invalid-login-credentials":
+        "Email ё парол нодуруст аст.",
+      "auth/user-not-found":
+        "Ин email дар Firebase Authentication ёфт нашуд.",
+      "auth/wrong-password":
+        "Парол нодуруст аст.",
+      "auth/too-many-requests":
+        "Кӯшишҳо зиёд шуданд. Баъдтар аз нав кӯшиш кун.",
+      "auth/network-request-failed":
+        "Интернетро санҷ ва боз кӯшиш кун.",
+      "permission-denied":
+        "Иҷозат нест. Қоидаҳои Firestore-ро санҷ.",
+      "storage/unauthorized":
+        "Барои ин амал иҷозат нест."
+    };
+    return (messages[code] || (error.message || "Хатои номаълум"))
+      + "\nКод: " + (code || "номаълум");
+  }
 
-  try {
-    const result = await auth.signInWithEmailAndPassword(email, password);
+  async function login() {
+    if (busy) return;
 
-    if (!result.user || result.user.uid !== ADMIN_UID) {
-      await auth.signOut();
-      setLoginMessage(
-        "Ҳисоб ворид шуд, вале UID-и он бо маъмури иҷозатдодашуда мувофиқат намекунад."
-      );
+    const email = $("email").value.trim();
+    const password = $("password").value;
+
+    if (!email || !password) {
+      showMessage("Email ва паролро ворид кун.", true);
       return;
     }
 
-    setLoginMessage("Воридшавӣ муваффақ шуд.");
-  } catch (error) {
-    setLoginMessage(explainError(error));
-  } finally {
-    setBusy(false);
-  }
-});
+    busy = true;
+    $("loginBtn").disabled = true;
+    showMessage("Ворид шуда истодааст...");
 
-auth.onAuthStateChanged(async user => {
-  if (!user) {
-    show("loginCard", true);
-    show("adminArea", false);
-    if (unsubscribeProducts) {
-      unsubscribeProducts();
-      unsubscribeProducts = null;
+    try {
+      const result = await auth.signInWithEmailAndPassword(email, password);
+
+      if (result.user.uid !== ADMIN_UID) {
+        await auth.signOut();
+        showMessage(
+          "Ин ҳисоб маъмури иҷозатдодашуда нест. UID-ро дар Firebase санҷ.",
+          true
+        );
+        return;
+      }
+
+      $("loginCard").classList.add("hidden");
+      $("panel").classList.remove("hidden");
+      $("welcome").textContent = "Маъмур: " + result.user.email;
+      showMessage("Воридшавӣ муваффақ шуд.");
+      await loadProducts();
+    } catch (error) {
+      showMessage(friendlyError(error), true);
+    } finally {
+      busy = false;
+      $("loginBtn").disabled = false;
     }
-    return;
   }
 
-  if (user.uid !== ADMIN_UID) {
-    show("loginCard", true);
-    show("adminArea", false);
-    setLoginMessage("Ин ҳисоб иҷозати маъмурӣ надорад.");
+  async function logout() {
     await auth.signOut();
-    return;
+    $("panel").classList.add("hidden");
+    $("loginCard").classList.remove("hidden");
+    $("password").value = "";
+    showMessage("Шумо аз ҳисоб баромадед.");
   }
 
-  show("loginCard", false);
-  show("adminArea", true);
-  $("welcome").textContent = "Маъмур: " + (user.email || "");
-
-  if (!unsubscribeProducts) listenProducts();
-});
-
-$("logoutBtn").addEventListener("click", async () => {
-  try {
-    await auth.signOut();
-    resetForm();
-    setLoginMessage("Шумо аз ҳисоб баромадед.");
-  } catch (error) {
-    setLoginMessage(explainError(error));
+  function requireAdmin() {
+    if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+      throw new Error("Аввал ҳамчун маъмури иҷозатдодашуда ворид шав.");
+    }
   }
-});
 
-// Фишурдани акс барои маҳдуд нигоҳ доштани андозаи ҳуҷҷат
-function compressImage(file) {
-  return new Promise((resolve, reject) => {
-    if (!file || !file.type.startsWith("image/")) {
-      reject(new Error("Файли интихобшуда акс нест."));
-      return;
-    }
+  // Аксро хурд мекунад, то андозаи ҳуҷҷати Firestore зиёд нашавад.
+  function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith("image/")) {
+        reject(new Error("Файли аксро интихоб кун."));
+        return;
+      }
 
-    if (file.size > 12 * 1024 * 1024) {
-      reject(new Error("Акс калон аст. Аксро то 12 MB интихоб кунед."));
-      return;
-    }
+      const reader = new FileReader();
 
-    const reader = new FileReader();
+      reader.onerror = () => reject(new Error("Акс хонда нашуд."));
+      reader.onload = () => {
+        const img = new Image();
 
-    reader.onerror = () => reject(new Error("Акс хонда нашуд."));
-    reader.onload = () => {
-      const img = new Image();
+        img.onerror = () => reject(new Error("Ин акс кушода нашуд."));
+        img.onload = () => {
+          const maxSide = 900;
+          const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+          const canvas = document.createElement("canvas");
 
-      img.onerror = () => reject(new Error("Акс кушода нашуд."));
-      img.onload = () => {
-        const scale = Math.min(1, 700 / Math.max(img.width, img.height));
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.max(1, Math.round(img.width * scale));
-        canvas.height = Math.max(1, Math.round(img.height * scale));
+          canvas.width = Math.max(1, Math.round(img.width * scale));
+          canvas.height = Math.max(1, Math.round(img.height * scale));
 
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        let quality = 0.72;
-        let data = canvas.toDataURL("image/jpeg", quality);
+          let quality = 0.7;
+          let data = canvas.toDataURL("image/jpeg", quality);
 
-        while (data.length > 600000 && quality > 0.3) {
-          quality -= 0.1;
-          data = canvas.toDataURL("image/jpeg", quality);
-        }
+          while (data.length > 450000 && quality > 0.3) {
+            quality -= 0.1;
+            data = canvas.toDataURL("image/jpeg", quality);
+          }
 
-        if (data.length > 600000) {
-          reject(new Error(
-            "Акс ҳанӯз калон аст. Аксро хурдтар интихоб кунед."
-          ));
-        } else {
+          if (data.length > 450000) {
+            reject(new Error(
+              "Акс ҳанӯз калон аст. Акси хурдтар интихоб кун."
+            ));
+            return;
+          }
+
           resolve(data);
-        }
+        };
+
+        img.src = reader.result;
       };
 
-      img.src = reader.result;
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
-
-$("imageFile").addEventListener("change", async () => {
-  const file = $("imageFile").files[0];
-  if (!file) return;
-
-  setFormMessage("Акс омода мешавад...");
-
-  try {
-    currentImage = await compressImage(file);
-    $("preview").src = currentImage;
-    show("preview", true);
-    $("imageUrl").value = "";
-    setFormMessage("Акс омода аст. Молро сабт кунед.");
-  } catch (error) {
-    currentImage = "";
-    setFormMessage(error.message || explainError(error));
-  }
-});
-
-$("imageUrl").addEventListener("input", () => {
-  if ($("imageUrl").value.trim()) {
-    currentImage = "";
-    $("imageFile").value = "";
-    show("preview", false);
-  }
-});
-
-$("productForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  if (busy) return;
-
-  const user = auth.currentUser;
-  if (!user || user.uid !== ADMIN_UID) {
-    setFormMessage("Аввал бо ҳисоби маъмурӣ ворид шавед.");
-    return;
+      reader.readAsDataURL(file);
+    });
   }
 
-  const name = $("name").value.trim();
-  const category = $("category").value.trim();
-  const price = Number($("price").value);
-  const imageUrl = $("imageUrl").value.trim();
+  $("photo").addEventListener("change", async function() {
+    const file = this.files[0];
+    if (!file) return;
 
-  if (!name || !category || !Number.isFinite(price) || price < 0) {
-    setFormMessage("Ном, категория ва нархи дурустро пур кунед.");
-    return;
-  }
-
-  if (imageUrl && !/^https?:\/\//i.test(imageUrl)) {
-    setFormMessage("Пайванди акс бояд бо https:// ё http:// оғоз шавад.");
-    return;
-  }
-
-  if (imageUrl && currentImage) {
-    setFormMessage("Як акс интихоб кунед: файл ё пайванди акс.");
-    return;
-  }
-
-  let image = currentImage || imageUrl;
-
-  // Агар таҳрир шавад ва акс нав интихоб нашавад, акси кӯҳна мемонад.
-  if (!image && editingId) {
-    image = $("preview").dataset.oldImage || "";
-  }
-
-  const data = {
-    name,
-    price,
-    category,
-    image,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  setBusy(true);
-  setFormMessage("Мол сабт мешавад...");
-
-  try {
-    if (editingId) {
-      await db.collection("products").doc(editingId).update(data);
-      setFormMessage("Мол бомуваффақият тағйир дода шуд.");
-    } else {
-      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      await db.collection("products").add(data);
-      setFormMessage("Мол бомуваффақият илова шуд.");
+    try {
+      showMessage("Акс омода шуда истодааст...");
+      currentImage = await compressImage(file);
+      $("preview").src = currentImage;
+      $("preview").classList.remove("hidden");
+      showMessage("Акс омода аст.");
+    } catch (error) {
+      currentImage = "";
+      $("preview").classList.add("hidden");
+      showMessage(error.message, true);
     }
+  });
 
-    resetForm();
-  } catch (error) {
-    setFormMessage(explainError(error));
-  } finally {
-    setBusy(false);
+  $("productForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    if (busy) return;
+
+    try {
+      requireAdmin();
+
+      const name = $("name").value.trim();
+      const category = $("category").value.trim();
+      const price = Number($("price").value);
+
+      if (!name || !category || !Number.isFinite(price) || price < 0) {
+        showMessage("Номи мол, категория ва нархи дурустро ворид кун.", true);
+        return;
+      }
+
+      busy = true;
+      $("saveBtn").disabled = true;
+      showMessage("Мол сабт шуда истодааст...");
+
+      const product = {
+        name: name,
+        category: category,
+        price: price,
+        image: currentImage || "",
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      if (editingId) {
+        // Агар акс нав интихоб нашуда бошад, акси кӯҳна нигоҳ дошта мешавад.
+        if (!currentImage) delete product.image;
+        await db.collection("products").doc(editingId).update(product);
+        showMessage("Мол бомуваффақият тағйир дода шуд.");
+      } else {
+        if (!currentImage) {
+          showMessage("Пеш аз илова кардани мол акси онро интихоб кун.", true);
+          return;
+        }
+
+        product.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection("products").add(product);
+        showMessage("Мол бомуваффақият илова шуд.");
+      }
+
+      resetForm();
+      await loadProducts();
+    } catch (error) {
+      showMessage(friendlyError(error), true);
+    } finally {
+      busy = false;
+      $("saveBtn").disabled = false;
+    }
+  });
+
+  function resetForm() {
+    editingId = null;
+    currentImage = "";
+    $("productForm").reset();
+    $("preview").src = "";
+    $("preview").classList.add("hidden");
+    $("formTitle").textContent = "➕ Илова кардани мол";
+    $("saveBtn").textContent = "Сабт кардани мол";
+    $("cancelBtn").classList.add("hidden");
   }
-});
 
-function resetForm() {
-  editingId = null;
-  currentImage = "";
-  $("productForm").reset();
-  $("preview").removeAttribute("src");
-  delete $("preview").dataset.oldImage;
-  show("preview", false);
-  show("cancelEdit", false);
-  $("formTitle").textContent = "➕ Иловаи моли нав";
-  $("saveBtn").textContent = "Сабти мол";
-}
+  function cancelEdit() {
+    resetForm();
+    showMessage("Тағйир додан бекор шуд.");
+  }
 
-$("cancelEdit").addEventListener("click", resetForm);
+  async function loadProducts() {
+    try {
+      requireAdmin();
+      $("products").textContent = "Бор шуда истодааст...";
 
-function listenProducts() {
-  $("listMsg").textContent = "Молҳо бор мешаванд...";
+      const snapshot = await db.collection("products")
+        .orderBy("createdAt", "desc")
+        .get();
 
-  unsubscribeProducts = db.collection("products")
-    .onSnapshot(snapshot => {
-      $("listMsg").textContent = "Ҳамагӣ: " + snapshot.size + " мол";
-      const list = $("productsList");
-      list.replaceChildren();
+      $("products").replaceChildren();
+
+      if (snapshot.empty) {
+        $("products").textContent = "Ҳоло ягон мол нест.";
+        return;
+      }
 
       snapshot.forEach(doc => {
         const p = doc.data();
         const item = document.createElement("div");
         item.className = "product";
 
-        const title = document.createElement("h3");
-        title.textContent = p.name || "Беном";
-        item.appendChild(title);
+        const img = document.createElement("img");
+        img.alt = p.name || "Акси мол";
+        img.src = p.image || "";
+        img.onerror = () => { img.style.visibility = "hidden"; };
 
-        if (p.image) {
-          const img = document.createElement("img");
-          img.src = p.image;
-          img.alt = p.name || "Акси мол";
-          img.loading = "lazy";
-          item.appendChild(img);
-        }
+        const details = document.createElement("div");
+        details.className = "details";
 
-        const details = document.createElement("p");
-        details.textContent =
-          "Нарх: " + (p.price ?? 0) + " сомонӣ | Категория: " +
-          (p.category || "—");
-        item.appendChild(details);
+        const name = document.createElement("strong");
+        name.textContent = p.name || "Беном";
+
+        const price = document.createElement("p");
+        price.textContent = "Нарх: " + (p.price ?? 0) + " сомонӣ";
+
+        const category = document.createElement("p");
+        category.textContent = "Категория: " + (p.category || "—");
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
 
         const edit = document.createElement("button");
-        edit.textContent = "Таҳрир";
-        edit.addEventListener("click", () => {
-          editingId = doc.id;
-          currentImage = "";
-          $("name").value = p.name || "";
-          $("price").value = p.price ?? "";
-          $("category").value = p.category || "";
-          $("imageUrl").value = "";
-          $("imageFile").value = "";
-          $("preview").dataset.oldImage = p.image || "";
-
-          if (p.image && p.image.startsWith("data:image/")) {
-            $("preview").src = p.image;
-            show("preview", true);
-          } else {
-            show("preview", false);
-            $("imageUrl").value = p.image || "";
-          }
-
-          $("formTitle").textContent = "✏️ Таҳрири мол";
-          $("saveBtn").textContent = "Сабти тағйирот";
-          show("cancelEdit", true);
-          $("productForm").scrollIntoView({ behavior: "smooth" });
-        });
-        item.appendChild(edit);
+        edit.textContent = "Тағйир";
+        edit.onclick = () => editProduct(doc.id, p);
 
         const del = document.createElement("button");
-        del.className = "danger";
         del.textContent = "Нест кардан";
-        del.addEventListener("click", async () => {
-          if (!confirm('Моли "' + (p.name || "") + '" нест карда шавад?')) {
-            return;
-          }
+        del.className = "danger";
+        del.onclick = () => deleteProduct(doc.id, p.name);
 
-          try {
-            await db.collection("products").doc(doc.id).delete();
-            $("listMsg").textContent = "Мол нест карда шуд.";
-          } catch (error) {
-            $("listMsg").textContent = explainError(error);
-          }
-        });
-        item.appendChild(del);
-        list.appendChild(item);
+        actions.append(edit, del);
+        details.append(name, price, category, actions);
+        item.append(img, details);
+        $("products").append(item);
       });
-    }, error => {
-      $("listMsg").textContent = explainError(error);
-    });
-}
+    } catch (error) {
+      $("products").textContent = "Рӯйхат бор нашуд.";
+      showMessage(friendlyError(error), true);
+    }
+  }
+
+  function editProduct(id, p) {
+    requireAdmin();
+
+    editingId = id;
+    currentImage = "";
+    $("name").value = p.name || "";
+    $("price").value = p.price ?? "";
+    $("category").value = p.category || "";
+    $("photo").value = "";
+
+    if (p.image) {
+      $("preview").src = p.image;
+      $("preview").classList.remove("hidden");
+    } else {
+      $("preview").classList.add("hidden");
+    }
+
+    $("formTitle").textContent = "✏️ Тағйир додани мол";
+    $("saveBtn").textContent = "Сабт кардани тағйирот";
+    $("cancelBtn").classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    showMessage("Маълумоти молро тағйир деҳ.");
+  }
+
+  async function deleteProduct(id, name) {
+    try {
+      requireAdmin();
+
+      if (!confirm('Моли "' + (name || "") + '"-ро нест мекунӣ?')) return;
+
+      await db.collection("products").doc(id).delete();
+      showMessage("Мол нест карда шуд.");
+      await loadProducts();
+    } catch (error) {
+      showMessage(friendlyError(error), true);
+    }
+  }
+
+  auth.onAuthStateChanged(async user => {
+    if (user && user.uid === ADMIN_UID) {
+      $("loginCard").classList.add("hidden");
+      $("panel").classList.remove("hidden");
+      $("welcome").textContent = "Маъмур: " + user.email;
+      await loadProducts();
+    } else {
+      $("panel").classList.add("hidden");
+      $("loginCard").classList.remove("hidden");
+    }
+  });
 </script>
 </body>
 </html>
