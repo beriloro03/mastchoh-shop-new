@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tg">
 <head>
@@ -49,212 +48,308 @@ footer{text-align:center;padding:22px;color:#68756d;font-size:13px}
 .field input,.field textarea{width:100%;padding:12px;border:1px solid #ccd5cf;border-radius:9px}
 .empty{text-align:center;padding:18px;color:#68756d}
 .notice{background:#fff5d6;padding:10px;border-radius:9px;font-size:13px;line-height:1.5}
+.status{font-size:13px;color:#68756d;margin:8px 0}
 @media(min-width:650px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.photo{height:190px}}
 @media(min-width:900px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
 <body>
+
 <header>
-  <div class="top">
-    <div>
-      <h1>🛍️ Мастчоҳ Шоп</h1>
-      <p>Мағозаи онлайни шумо</p>
-    </div>
-    <button class="cartbtn" onclick="openCart()">🛒 Сабад <span id="cartCount">0</span></button>
-  </div>
+<div class="top">
+<div>
+<h1>🛍️ Мастчоҳ Шоп</h1>
+<p>Мағозаи онлайни шумо</p>
+</div>
+<button class="cartbtn" onclick="openCart()">🛒 Сабад <span id="cartCount">0</span></button>
+</div>
 </header>
 
 <main>
-  <section class="hero">
-    <h2>Хуш омадед ба Мастчоҳ Шоп!</h2>
-    <p>Молҳои дилхоҳатонро интихоб кунед, ба сабад илова кунед ва тавассути WhatsApp фармоиш диҳед.</p>
-  </section>
+<section class="hero">
+<h2>Хуш омадед ба Мастчоҳ Шоп!</h2>
+<p>Молҳои дилхоҳатонро интихоб кунед, ба сабад илова кунед ва тавассути WhatsApp фармоиш диҳед.</p>
+</section>
 
-  <div class="tools">
-    <input id="search" type="search" placeholder="🔎 Ҷустуҷӯи мол..." oninput="renderProducts()">
-    <select id="category" onchange="renderProducts()">
-      <option value="all">Ҳамаи молҳо</option>
-      <option value="chargers">Зарядник</option>
-      <option value="cables">Кабел</option>
-      <option value="cases">Чехол</option>
-      <option value="glass">Шиша</option>
-      <option value="audio">Гӯшмонак</option>
-      <option value="power">Power Bank</option>
-      <option value="holders">Доранда</option>
-      <option value="shoes">Пойафзол</option>
-    </select>
-  </div>
+<div class="tools">
+<input id="search" type="search" placeholder="🔎 Ҷустуҷӯи мол..." oninput="renderProducts()">
+<select id="category" onchange="renderProducts()">
+<option value="all">Ҳамаи молҳо</option>
+<option value="chargers">Зарядник</option>
+<option value="cables">Кабел</option>
+<option value="cases">Чехол</option>
+<option value="glass">Шиша</option>
+<option value="audio">Гӯшмонак</option>
+<option value="power">Power Bank</option>
+<option value="holders">Доранда</option>
+<option value="shoes">Пойафзол</option>
+</select>
+</div>
 
-  <h2 class="section-title">🛍️ Молҳои мо</h2>
-  <div class="products" id="products"></div>
+<h2 class="section-title">🛍️ Молҳои мо</h2>
+<p id="status" class="status">Молҳо бор шуда истодаанд...</p>
+<div class="products" id="products"></div>
 </main>
 
 <footer>© Мастчоҳ Шоп — барои фармоиш тавассути WhatsApp нависед.</footer>
 
 <div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
-  <section class="panel">
-    <div class="panelhead">
-      <h2>🛒 Сабади харид</h2>
-      <button class="close" onclick="closeCart()">×</button>
-    </div>
-    <div id="cartItems"></div>
-    <div class="total"><span>Ҳамагӣ:</span><span id="total">0 сомонӣ</span></div>
-
-    <h3>Маълумоти фармоиш</h3>
-    <form id="checkoutForm">
-      <label class="field">
-        <span>Номи шумо *</span>
-        <input id="customerName" required placeholder="Ному насаб">
-      </label>
-      <label class="field">
-        <span>Рақами телефон *</span>
-        <input id="customerPhone" type="tel" required placeholder="+992 ...">
-      </label>
-      <label class="field">
-        <span>Суроғаи расонидан</span>
-        <input id="customerAddress" placeholder="Шаҳр, ноҳия ё деҳа">
-      </label>
-      <p class="notice">Пас аз пахш кардан WhatsApp кушода мешавад. Барои фиристодани фармоиш дар WhatsApp тугмаи «Отправить»-ро пахш кунед.</p>
-      <button class="btn" type="submit">📲 Фармоиш тавассути WhatsApp</button>
-    </form>
-  </section>
+<section class="panel">
+<div class="panelhead">
+<h2>🛒 Сабади харид</h2>
+<button class="close" onclick="closeCart()">×</button>
 </div>
+<div id="cartItems"></div>
+<div class="total"><span>Ҳамагӣ:</span><span id="total">0 сомонӣ</span></div>
+
+<h3>Маълумоти фармоиш</h3>
+<form id="checkoutForm">
+<label class="field">
+<span>Номи шумо *</span>
+<input id="customerName" required placeholder="Ному насаб">
+</label>
+<label class="field">
+<span>Рақами телефон *</span>
+<input id="customerPhone" type="tel" required placeholder="+992 ...">
+</label>
+<label class="field">
+<span>Суроғаи расонидан</span>
+<input id="customerAddress" placeholder="Шаҳр, ноҳия ё деҳа">
+</label>
+<p class="notice">Пас аз пахш кардан WhatsApp кушода мешавад. Барои фиристодани фармоиш дар WhatsApp тугмаи «Отправить»-ро пахш кунед.</p>
+<button class="btn" type="submit">📲 Фармоиш тавассути WhatsApp</button>
+</form>
+</section>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
 const WHATSAPP_NUMBER = "79964468762";
 
-const productsData = [
-  {
-    id:1, name:"Зарядник Type-C", category:"chargers",
-    categoryName:"Зарядник", price:25, icon:"🔌",
-    image:"https://images.unsplash.com/photo-1591290619762-c5887b7b5e2c?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:2, name:"Кабели USB", category:"cables",
-    categoryName:"Кабел", price:15, icon:"🔗",
-    image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:3, name:"Чехоли телефон", category:"cases",
-    categoryName:"Чехол", price:20, icon:"📱",
-    image:"https://images.unsplash.com/photo-1601593346740-925612772716?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:4, name:"Шишаи муҳофизатӣ", category:"glass",
-    categoryName:"Шиша", price:10, icon:"🛡️",
-    image:"https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:5, name:"Гӯшмонак", category:"audio",
-    categoryName:"Гӯшмонак", price:45, icon:"🎧",
-    image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:6, name:"Power Bank", category:"power",
-    categoryName:"Power Bank", price:120, icon:"🔋",
-    image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:7, name:"Дорандаи телефон", category:"holders",
-    categoryName:"Доранда", price:35, icon:"📱",
-    image:"https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id:8, name:"Кроссовка", category:"shoes",
-    categoryName:"Пойафзол", price:350, icon:"👟",
-    image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
-  }
+const firebaseConfig = {
+  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-xxtLfEmtBfe0",
+  authDomain: "mastchoh-shop-4a490.firebaseapp.com",
+  projectId: "mastchoh-shop-4a490",
+  storageBucket: "mastchoh-shop-4a490.firebasestorage.app",
+  messagingSenderId: "948589793868",
+  appId: "1:948589793868:web:cc2050951f2d452a0b5ae9"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const defaultProducts = [
+{
+id:1,
+name:"Зарядник Type-C",
+category:"chargers",
+categoryName:"Зарядник",
+price:25,
+icon:"🔌",
+image:"https://images.unsplash.com/photo-1591290619762-c5887b7b5e2c?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:2,
+name:"Кабели USB",
+category:"cables",
+categoryName:"Кабел",
+price:15,
+icon:"🔗",
+image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:3,
+name:"Чехоли телефон",
+category:"cases",
+categoryName:"Чехол",
+price:20,
+icon:"📱",
+image:"https://images.unsplash.com/photo-1601593346740-925612772716?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:4,
+name:"Шишаи муҳофизатӣ",
+category:"glass",
+categoryName:"Шиша",
+price:10,
+icon:"🛡️",
+image:"https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:5,
+name:"Гӯшмонак",
+category:"audio",
+categoryName:"Гӯшмонак",
+price:45,
+icon:"🎧",
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:6,
+name:"Power Bank",
+category:"power",
+categoryName:"Power Bank",
+price:120,
+icon:"🔋",
+image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:7,
+name:"Дорандаи телефон",
+category:"holders",
+categoryName:"Доранда",
+price:35,
+icon:"📱",
+image:"https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=600&q=80"
+},
+{
+id:8,
+name:"Кроссовка",
+category:"shoes",
+categoryName:"Пойафзол",
+price:350,
+icon:"👟",
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+}
 ];
 
+const categoryNames = {
+chargers:"Зарядник",
+cables:"Кабел",
+cases:"Чехол",
+glass:"Шиша",
+audio:"Гӯшмонак",
+power:"Power Bank",
+holders:"Доранда",
+shoes:"Пойафзол"
+};
+
+const categoryIcons = {
+chargers:"🔌",
+cables:"🔗",
+cases:"📱",
+glass:"🛡️",
+audio:"🎧",
+power:"🔋",
+holders:"📱",
+shoes:"👟"
+};
+
+let productsData = [...defaultProducts];
 let cart = {};
 
-function money(n){
-  return n.toLocaleString("en-US") + " сомонӣ";
+function money(n) {
+  return Number(n || 0).toLocaleString("en-US") + " сомонӣ";
 }
 
-function renderProducts(){
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+function renderProducts() {
   const q = document.getElementById("search").value.trim().toLowerCase();
   const cat = document.getElementById("category").value;
+
   const filtered = productsData.filter(p =>
     (cat === "all" || p.category === cat) &&
-    (p.name.toLowerCase().includes(q) || p.categoryName.toLowerCase().includes(q))
+    (
+      String(p.name).toLowerCase().includes(q) ||
+      String(p.categoryName).toLowerCase().includes(q)
+    )
   );
 
   const area = document.getElementById("products");
-  if(!filtered.length){
+
+  if (!filtered.length) {
     area.innerHTML = '<div class="empty">Мол ёфт нашуд.</div>';
     return;
   }
 
-  area.innerHTML = filtered.map(p => `
-    <article class="product">
-      <div class="photo">
-        <img src="${p.image}" alt="${p.name}"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <span class="fallback">${p.icon}</span>
-      </div>
-      <h3>${p.name}</h3>
-      <p class="desc">${p.categoryName}</p>
-      <div class="price">${money(p.price)}</div>
-      <button class="btn" onclick="addToCart(${p.id})">➕ Ба сабад илова кун</button>
-    </article>
-  `).join("");
+  area.innerHTML = filtered.map(p => {
+    const img = String(p.image || "");
+
+    const imageHtml = /^https:\/\//i.test(img)
+      ? `<img src="${safeText(img)}" alt="${safeText(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
+      : "";
+
+    return `
+      <article class="product">
+        <div class="photo">
+          ${imageHtml}
+          <span class="fallback" style="display:${imageHtml ? 'none' : 'block'}">${safeText(p.icon || "📦")}</span>
+        </div>
+        <h3>${safeText(p.name)}</h3>
+        <p class="desc">${safeText(p.categoryName || categoryNames[p.category] || "Мол")}</p>
+        <div class="price">${money(p.price)}</div>
+        <button class="btn" onclick="addToCart('${String(p.id).replace(/'/g,"\\'")}')">➕ Ба сабад илова кун</button>
+      </article>
+    `;
+  }).join("");
 }
 
-function addToCart(id){
+function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   updateCart();
 }
 
-function changeQty(id, amount){
+function changeQty(id, amount) {
   cart[id] = (cart[id] || 0) + amount;
-  if(cart[id] <= 0) delete cart[id];
+  if (cart[id] <= 0) delete cart[id];
   updateCart();
 }
 
-function updateCart(){
-  const count = Object.values(cart).reduce((a,b)=>a+b,0);
+function updateCart() {
+  const count = Object.values(cart).reduce((a,b) => a + b, 0);
   document.getElementById("cartCount").textContent = count;
 
   const items = productsData.filter(p => cart[p.id]);
   const box = document.getElementById("cartItems");
 
-  if(!items.length){
+  if (!items.length) {
     box.innerHTML = '<div class="empty">Сабад ҳоло холӣ аст.</div>';
   } else {
     box.innerHTML = items.map(p => `
       <div class="cartrow">
         <div>
-          <strong>${p.name}</strong><br>
+          <strong>${safeText(p.name)}</strong><br>
           <small>${money(p.price)} × ${cart[p.id]}</small>
         </div>
         <div class="qty">
-          <button onclick="changeQty(${p.id},-1)">−</button>
+          <button onclick="changeQty('${String(p.id).replace(/'/g,"\\'")}',-1)">−</button>
           <span>${cart[p.id]}</span>
-          <button onclick="changeQty(${p.id},1)">+</button>
+          <button onclick="changeQty('${String(p.id).replace(/'/g,"\\'")}',1)">+</button>
         </div>
       </div>
     `).join("");
   }
 
-  const total = items.reduce((sum,p)=>sum+p.price*cart[p.id],0);
+  const total = items.reduce((sum,p) => sum + Number(p.price || 0) * cart[p.id], 0);
   document.getElementById("total").textContent = money(total);
 }
 
-function openCart(){
+function openCart() {
   document.getElementById("cartOverlay").classList.add("open");
   updateCart();
 }
 
-function closeCart(){
+function closeCart() {
   document.getElementById("cartOverlay").classList.remove("open");
 }
 
-document.getElementById("checkoutForm").addEventListener("submit", function(e){
+document.getElementById("checkoutForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
   const items = productsData.filter(p => cart[p.id]);
-  if(!items.length){
+
+  if (!items.length) {
     alert("Аввал молро ба сабад илова кунед.");
     return;
   }
@@ -264,10 +359,10 @@ document.getElementById("checkoutForm").addEventListener("submit", function(e){
   const address = document.getElementById("customerAddress").value.trim();
 
   const lines = items.map(p =>
-    `• ${p.name} — ${cart[p.id]} дона × ${p.price} = ${p.price*cart[p.id]} сомонӣ`
+    `• ${p.name} — ${cart[p.id]} дона × ${p.price} = ${Number(p.price) * cart[p.id]} сомонӣ`
   );
 
-  const total = items.reduce((sum,p)=>sum+p.price*cart[p.id],0);
+  const total = items.reduce((sum,p) => sum + Number(p.price || 0) * cart[p.id], 0);
 
   const message =
     `Салом! Ман аз Мастчоҳ Шоп фармоиш медиҳам.\n\n` +
@@ -279,8 +374,52 @@ document.getElementById("checkoutForm").addEventListener("submit", function(e){
   window.open(url, "_blank");
 });
 
+// Молҳои навро аз Firebase мехонад.
+db.collection("products").onSnapshot(snapshot => {
+  const fromFirebase = snapshot.docs.map(doc => {
+    const d = doc.data();
+    const category = d.category || "chargers";
+
+    return {
+      id: doc.id,
+      name: d.name || "Моли нав",
+      price: Number(d.price) || 0,
+      category: category,
+      categoryName: categoryNames[category] || category,
+      icon: categoryIcons[category] || "📦",
+      image: d.image || ""
+    };
+  });
+
+  // Молҳои пешина бо молҳои нави Firebase якҷо нишон дода мешаванд.
+  const firebaseNames = new Set(
+    fromFirebase.map(p => String(p.name).trim().toLowerCase())
+  );
+
+  const oldProducts = defaultProducts.filter(
+    p => !firebaseNames.has(p.name.trim().toLowerCase())
+  );
+
+  productsData = [...oldProducts, ...fromFirebase];
+
+  document.getElementById("status").textContent = "Молҳо: " + productsData.length;
+
+  renderProducts();
+  updateCart();
+
+}, error => {
+  console.error("Firestore read error:", error);
+
+  document.getElementById("status").textContent =
+    "Молҳои захиравӣ нишон дода мешаванд; пайвасти Firebase-ро санҷед.";
+
+  renderProducts();
+  updateCart();
+});
+
 renderProducts();
 updateCart();
 </script>
+
 </body>
 </html>
