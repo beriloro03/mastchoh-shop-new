@@ -2,115 +2,218 @@
 <!DOCTYPE html>
 <html lang="tg">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mastchoh Shop — Панели маъмур</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0fdf4;
-      margin: 0;
-      padding: 14px;
-      color: #222;
-    }
-    main {
-      max-width: 600px;
-      margin: 15px auto;
-      background: white;
-      padding: 18px;
-      border-radius: 14px;
-      box-shadow: 0 2px 12px #0001;
-    }
-    h2, h3 { color: #087f5b; }
-    input, button, select {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      margin: 6px 0;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    input, select { border: 1px solid #ccc; }
-    button {
-      background: #087f5b;
-      color: white;
-      border: 0;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:disabled { opacity: .6; }
-    .cancel { background: #64748b; }
-    .delete { background: #c62828; }
-    .product {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 12px;
-      margin: 12px 0;
-      overflow-wrap: anywhere;
-    }
-    .product img {
-      width: 100%;
-      max-height: 220px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-    #panel { display: none; }
-    #status { white-space: pre-wrap; overflow-wrap: anywhere; }
-    .hint { color: #555; font-size: 14px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087f5b">
+<title>Панели маъмур — Mastchoh Shop</title>
+
+<style>
+:root {
+  --green: #087f5b;
+  --dark: #075c43;
+  --bg: #f3f7f4;
+  --border: #dfe9e2;
+  --text: #1c2922;
+  --muted: #68766e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+header {
+  background: var(--green);
+  color: white;
+  padding: 20px 16px;
+}
+header h1 { margin: 0 0 6px; font-size: 23px; }
+header p { margin: 0; opacity: .9; font-size: 14px; }
+main { max-width: 760px; margin: auto; padding: 18px 12px 40px; }
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.04);
+}
+h2 { margin: 0 0 16px; font-size: 20px; }
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 14px 0 7px;
+}
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cfdcd3;
+  border-radius: 10px;
+  background: white;
+  font-size: 16px;
+  min-width: 0;
+}
+input:focus, select:focus {
+  outline: 2px solid #b4e2cb;
+  border-color: var(--green);
+}
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.primary {
+  background: var(--green);
+  color: white;
+  width: 100%;
+  margin-top: 17px;
+}
+.secondary { background: #e9f5ed; color: var(--dark); }
+.danger { background: #fff0ef; color: #b42318; }
+.hidden { display: none !important; }
+.message {
+  margin-top: 12px;
+  padding: 11px;
+  border-radius: 9px;
+  background: #eef7f0;
+  color: var(--dark);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.preview {
+  display: none;
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+  object-fit: contain;
+  background: #f1f5f2;
+  border-radius: 12px;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+}
+.hint { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding: 13px 0;
+}
+.product img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #edf3ee;
+  flex-shrink: 0;
+}
+.product-info { flex: 1; min-width: 0; }
+.product-info strong {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-bottom: 5px;
+}
+.product-info small { color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.actions button { padding: 9px 11px; font-size: 13px; }
+.top-actions { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+@media(max-width:430px) {
+  .card { padding: 14px; }
+  .product { align-items: flex-start; }
+  .product img { width: 58px; height: 58px; }
+  .actions button { padding: 8px; }
+}
+</style>
 </head>
+
 <body>
+<header>
+  <h1>🛍️ Mastchoh Shop</h1>
+  <p>Панели идоракунии мағоза</p>
+</header>
+
 <main>
-  <h2>🛍️ Mastchoh Shop</h2>
-  <h3>Панели маъмур</h3>
+  <section id="loginSection" class="card">
+    <h2>🔐 Воридшавии маъмур</h2>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username"
+        required placeholder="Email-и маъмур">
 
-  <section id="login">
-    <input id="email" type="email"
-      placeholder="Почтаи электронии маъмур"
-      autocomplete="username">
-    <input id="password" type="password"
-      placeholder="Парол" autocomplete="current-password">
-    <button id="loginBtn">Ворид шудан</button>
+      <label for="password">Парол</label>
+      <input id="password" type="password"
+        autocomplete="current-password" required placeholder="Пароли Firebase">
+
+      <button class="primary" id="loginBtn" type="submit">Ворид шудан</button>
+    </form>
+    <div id="loginMessage" class="message hidden"></div>
   </section>
 
-  <section id="panel">
-    <h3 id="formTitle">➕ Илова кардани моли нав</h3>
+  <section id="adminSection" class="hidden">
+    <div class="top-actions">
+      <button id="logoutBtn" class="secondary" type="button">Баромадан</button>
+    </div>
 
-    <input id="name" placeholder="Номи мол">
-    <input id="price" type="number" min="1" step="1"
-      placeholder="Нарх бо сомонӣ">
+    <section class="card">
+      <h2 id="formTitle">➕ Илова кардани мол</h2>
 
-    <select id="category">
-      <option value="">Категорияро интихоб кунед</option>
-      <option value="chargers">Зарядник</option>
-      <option value="cables">Кабел</option>
-      <option value="cases">Чехол</option>
-      <option value="glass">Шишаи муҳофизатӣ</option>
-      <option value="audio">Гӯшмонак / Колонка</option>
-      <option value="power">Power Bank</option>
-      <option value="holders">Дорандаи телефон</option>
-      <option value="shoes">Пойафзол</option>
-      <option value="other">Дигар молҳо</option>
-    </select>
+      <form id="productForm">
+        <label for="name">Номи мол</label>
+        <input id="name" type="text" maxlength="100"
+          required placeholder="Масалан: Гӯшмонак Bluetooth">
 
-    <input id="image" type="url"
-      placeholder="Пайванди акси мол (URL)">
-    <p class="hint">Пайванди акс бояд бо https:// сар шавад. Агар акс надошта бошед, майдонро холӣ гузоред.</p>
+        <label for="price">Нарх бо сомонӣ</label>
+        <input id="price" type="number" min="0" max="10000000"
+          step="0.01" required placeholder="Масалан: 120">
 
-    <button id="saveBtn">Илова кардани мол</button>
-    <button id="cancelBtn" class="cancel" hidden>
-      Бекор кардани таҳрир
-    </button>
+        <label for="category">Категория</label>
+        <select id="category" required>
+          <option value="chargers">Зарядникҳо</option>
+          <option value="cables">Кабелҳо</option>
+          <option value="cases">Чехолҳо</option>
+          <option value="glass">Шишаҳои муҳофизатӣ</option>
+          <option value="audio">Гӯшмонак ва аудио</option>
+          <option value="power">Power Bank</option>
+          <option value="holders">Дорандаи телефон</option>
+          <option value="shoes">Пойафзол</option>
+          <option value="other">Дигар молҳо</option>
+        </select>
 
-    <hr>
-    <h3>📦 Молҳои мағоза</h3>
-    <p id="count">Молҳо бор шуда истодаанд...</p>
-    <div id="products"></div>
+        <label for="imageFile">📷 Акси молро аз галерея интихоб кун</label>
+        <input id="imageFile" type="file" accept="image/*">
+        <img id="imagePreview" class="preview" alt="Пешнамоиши акси мол">
+        <p class="hint">
+          Акс худкор хурд карда мешавад. Барои нигоҳ доштани ҷой
+          акси равшани хурд интихоб кун.
+        </p>
 
-    <button id="logoutBtn" class="cancel">Баромадан</button>
+        <label for="image">Ё пайванди акси мол</label>
+        <input id="image" type="text" inputmode="url"
+          placeholder="https://...">
+
+        <button class="primary" id="saveBtn" type="submit">
+          💾 Сабт кардани мол
+        </button>
+        <button class="secondary hidden" id="cancelBtn" type="button"
+          style="width:100%;margin-top:10px">
+          Бекор кардани таҳрир
+        </button>
+      </form>
+
+      <div id="adminMessage" class="message hidden"></div>
+    </section>
+
+    <section class="card">
+      <h2>📦 Молҳои мағоза</h2>
+      <p id="productCount" class="hint">Дар ҳоли боргирӣ...</p>
+      <div id="productList"></div>
+    </section>
   </section>
-
-  <p id="status" role="status" aria-live="polite"></p>
 </main>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -118,8 +221,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
+"use strict";
+
+/* Танзимоти лоиҳаи Mastchoh Shop */
 const firebaseConfig = {
-  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-xxtLfEmtBfe0",
+  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-XxtLfEmtBfe0",
   authDomain: "mastchoh-shop-4a490.firebaseapp.com",
   projectId: "mastchoh-shop-4a490",
   storageBucket: "mastchoh-shop-4a490.firebasestorage.app",
@@ -127,203 +233,226 @@ const firebaseConfig = {
   appId: "1:948589793868:web:cc2050951f2d452a0b5ae9"
 };
 
-firebase.initializeApp(firebaseConfig);
+const ADMIN_UID = "fpry8BO43fNPvnbmwymfZ6QMS9f2";
 
+firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const adminUID = "fpry8BO43fNPvnbmwymfZ6QMS9f2";
 
 const $ = id => document.getElementById(id);
+
 let editingId = null;
+let existingImage = "";
+let selectedImageData = "";
 let unsubscribeProducts = null;
+let busy = false;
 
-function message(text) {
-  $("status").textContent = text;
+function message(text, where = "adminMessage") {
+  const el = $(where);
+  el.textContent = text;
+  el.classList.remove("hidden");
 }
 
-function resetForm() {
-  editingId = null;
-  $("name").value = "";
-  $("price").value = "";
-  $("category").value = "";
-  $("image").value = "";
-  $("formTitle").textContent = "➕ Илова кардани моли нав";
-  $("saveBtn").textContent = "Илова кардани мол";
-  $("cancelBtn").hidden = true;
+function clearMessage(where = "adminMessage") {
+  $(where).textContent = "";
+  $(where).classList.add("hidden");
 }
 
-function stopProductsListener() {
-  if (unsubscribeProducts) {
-    unsubscribeProducts();
-    unsubscribeProducts = null;
+function money(value) {
+  return Number(value || 0).toLocaleString("ru-RU") + " сомонӣ";
+}
+
+function validImageUrl(value) {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch (_) {
+    return false;
   }
 }
 
-function makeButton(text, className, action) {
-  const btn = document.createElement("button");
-  btn.textContent = text;
-  if (className) btn.className = className;
-  btn.type = "button";
-  btn.addEventListener("click", action);
-  return btn;
-}
+/* Интихоб ва хурд кардани акс */
+$("imageFile").addEventListener("change", async function () {
+  const file = this.files && this.files[0];
+  selectedImageData = "";
+  clearMessage();
 
-function showProducts(snapshot) {
-  const list = $("products");
-  list.replaceChildren();
-  $("count").textContent = "Ҳамагӣ: " + snapshot.size + " мол";
-
-  if (snapshot.empty) {
-    list.textContent = "Ҳоло мол илова нашудааст.";
+  if (!file) {
+    if (existingImage) showPreview(existingImage);
+    else hidePreview();
     return;
   }
 
-  snapshot.forEach(doc => {
-    const p = doc.data();
-    const card = document.createElement("div");
-    card.className = "product";
+  if (!file.type.startsWith("image/")) {
+    message("Ин файл акс нест. Лутфан акс интихоб кун.");
+    this.value = "";
+    return;
+  }
 
-    if (p.image && /^https:\/\//i.test(p.image)) {
-      const img = document.createElement("img");
-      img.src = p.image;
-      img.alt = p.name || "Акси мол";
-      img.loading = "lazy";
-      img.referrerPolicy = "no-referrer";
-      img.onerror = () => img.remove();
-      card.appendChild(img);
-    }
+  if (file.size > 15 * 1024 * 1024) {
+    message("Акс аз 15 MB калон аст. Акси хурдтар интихоб кун.");
+    this.value = "";
+    return;
+  }
 
-    const name = document.createElement("h3");
-    name.textContent = p.name || "Бе ном";
-    card.appendChild(name);
+  const reader = new FileReader();
 
-    const price = document.createElement("p");
-    price.textContent = "Нарх: " + (p.price ?? "—") + " сомонӣ";
-    card.appendChild(price);
+  reader.onerror = () => message("Файл хонда нашуд. Акси дигарро санҷ.");
 
-    const category = document.createElement("p");
-    category.textContent = "Категория: " + (p.category || "—");
-    card.appendChild(category);
+  reader.onload = async () => {
+    try {
+      const img = new Image();
 
-    card.appendChild(makeButton("✏️ Таҳрир", "", () => {
-      editingId = doc.id;
-      $("name").value = p.name || "";
-      $("price").value = p.price ?? "";
-      $("category").value = p.category || "";
-      $("image").value = p.image || "";
-      $("formTitle").textContent = "✏️ Таҳрири мол";
-      $("saveBtn").textContent = "Сабти тағйирот";
-      $("cancelBtn").hidden = false;
-      message("Маълумоти молро тағйир диҳед.");
-      window.scrollTo(0, 0);
-    }));
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = reader.result;
+      });
 
-    card.appendChild(makeButton("🗑️ Нест кардани мол", "delete", async () => {
-      if (!confirm('Моли "' + (p.name || "бе ном") + '" нест карда шавад?')) {
+      const maxSide = 700;
+      const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+      const canvas = document.createElement("canvas");
+
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      let quality = 0.65;
+      let compressed = canvas.toDataURL("image/jpeg", quality);
+
+      while (compressed.length > 500000 && quality > 0.25) {
+        quality -= 0.1;
+        compressed = canvas.toDataURL("image/jpeg", quality);
+      }
+
+      if (compressed.length > 500000) {
+        message("Акс хеле калон аст. Лутфан акси хурдтар интихоб кун.");
+        $("imageFile").value = "";
+        hidePreview();
         return;
       }
-      try {
-        const user = auth.currentUser;
-        if (!user || user.uid !== adminUID) {
-          message("Иҷозат дода нашуд.");
-          return;
-        }
-        await db.collection("products").doc(doc.id).delete();
-        if (editingId === doc.id) resetForm();
-        message("Мол нест карда шуд.");
-      } catch (e) {
-        console.error(e);
-        message("Нест нашуд. Қоидаҳои Firestore-ро санҷед.");
-      }
-    }));
 
-    list.appendChild(card);
-  });
-}
-
-function startProductsListener() {
-  stopProductsListener();
-  $("count").textContent = "Молҳо бор шуда истодаанд...";
-
-  unsubscribeProducts = db.collection("products")
-    .orderBy("createdAt", "desc")
-    .onSnapshot(snapshot => {
-      showProducts(snapshot);
-    }, error => {
+      selectedImageData = compressed;
+      showPreview(compressed);
+      $("image").value = "";
+      message("Акс омода аст. Акнун молро сабт кун.");
+    } catch (error) {
       console.error(error);
-      message("Рӯйхати молҳо кушода нашуд. Интернет ва иҷозатҳои Firestore-ро санҷед.");
-    });
-}
-
-auth.onAuthStateChanged(user => {
-  stopProductsListener();
-  resetForm();
-
-  if (user && user.uid === adminUID) {
-    $("login").style.display = "none";
-    $("panel").style.display = "block";
-    message("Шумо ҳамчун маъмур ворид шудед.");
-    startProductsListener();
-  } else {
-    $("panel").style.display = "none";
-    $("login").style.display = "block";
-
-    if (user) {
-      message("Ин ҳисоб иҷозати маъмур надорад.");
-      auth.signOut();
+      message("Коркарди акс муваффақ нашуд. Акси дигарро санҷ.");
     }
-  }
+  };
+
+  reader.readAsDataURL(file);
 });
 
-$("loginBtn").onclick = async () => {
+function showPreview(src) {
+  if (!src) {
+    hidePreview();
+    return;
+  }
+  $("imagePreview").src = src;
+  $("imagePreview").style.display = "block";
+}
+
+function hidePreview() {
+  $("imagePreview").removeAttribute("src");
+  $("imagePreview").style.display = "none";
+}
+
+/* Воридшавӣ ба Firebase */
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearMessage("loginMessage");
+
+  const btn = $("loginBtn");
+  btn.disabled = true;
+  btn.textContent = "Дар ҳоли воридшавӣ...";
+
   try {
-    message("Ворид шуда истодаед...");
     await auth.signInWithEmailAndPassword(
       $("email").value.trim(),
       $("password").value
     );
-    $("password").value = "";
-  } catch (e) {
-    console.error(e);
-    message("Ворид нашуд. Почта, парол ва интернетро санҷед.");
+  } catch (error) {
+    console.error(error);
+    message("Ворид нашуд. Email ва паролро санҷ.", "loginMessage");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Ворид шудан";
   }
-};
+});
 
-$("saveBtn").onclick = async () => {
-  const user = auth.currentUser;
+auth.onAuthStateChanged(async user => {
+  if (unsubscribeProducts) {
+    unsubscribeProducts();
+    unsubscribeProducts = null;
+  }
 
-  if (!user || user.uid !== adminUID) {
-    message("Иҷозат дода нашуд.");
+  if (!user) {
+    $("loginSection").classList.remove("hidden");
+    $("adminSection").classList.add("hidden");
     return;
   }
+
+  if (user.uid !== ADMIN_UID) {
+    message("Ин ҳисоб иҷозати маъмурӣ надорад.", "loginMessage");
+    try { await auth.signOut(); } catch (_) {}
+    return;
+  }
+
+  $("loginSection").classList.add("hidden");
+  $("adminSection").classList.remove("hidden");
+  listenProducts();
+});
+
+/* Сабт кардани мол — ҳам илова ва ҳам таҳрир */
+$("productForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (busy) return;
+
+  clearMessage();
 
   const name = $("name").value.trim();
   const price = Number($("price").value);
   const category = $("category").value;
-  const image = $("image").value.trim();
+  const imageUrl = $("image").value.trim();
 
-  if (!name || !category || !Number.isInteger(price) || price <= 0) {
-    message("Номи мол, категория ва нархи дурустро ворид кунед.");
+  if (!name) {
+    message("Номи молро ворид кун.");
     return;
   }
 
-  if (image) {
-    try {
-      const url = new URL(image);
-      if (url.protocol !== "https:") throw new Error();
-    } catch {
-      message("Пайванди акс бояд дуруст бошад ва бо https:// сар шавад.");
-      return;
-    }
+  if (!Number.isFinite(price) || price < 0 || price > 10000000) {
+    message("Нарх нодуруст аст.");
+    return;
   }
 
-  const btn = $("saveBtn");
-  btn.disabled = true;
+  if (!validImageUrl(imageUrl)) {
+    message("Пайванди акс бояд бо http:// ё https:// оғоз шавад.");
+    return;
+  }
+
+  const image = selectedImageData || imageUrl || existingImage;
+
+  if (!image) {
+    message("Акси молро интихоб кун ё пайванди аксро ворид намо.");
+    return;
+  }
+
+  busy = true;
+  $("saveBtn").disabled = true;
+  $("saveBtn").textContent = "Дар ҳоли сабт...";
 
   try {
     const data = { name, price, category, image };
 
     if (editingId) {
+      data.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
       await db.collection("products").doc(editingId).update(data);
       message("Тағйироти мол сабт шуд!");
     } else {
@@ -332,28 +461,147 @@ $("saveBtn").onclick = async () => {
       message("Мол ба пойгоҳи додаҳо илова шуд!");
     }
 
-    resetForm();
-  } catch (e) {
-    console.error(e);
-    message("Хато ҳангоми сабт. Интернет ва қоидаҳои Firestore-ро санҷед.");
+    resetForm(false);
+  } catch (error) {
+    console.error(error);
+    message("Хато ҳангоми сабт. Интернет, иҷозати маъмур ва андозаи аксро санҷ.");
   } finally {
-    btn.disabled = false;
+    busy = false;
+    $("saveBtn").disabled = false;
+    $("saveBtn").textContent = "💾 Сабт кардани мол";
   }
-};
+});
 
-$("cancelBtn").onclick = () => {
+function resetForm(clearStatus = true) {
+  editingId = null;
+  existingImage = "";
+  selectedImageData = "";
+
+  $("productForm").reset();
+  $("formTitle").textContent = "➕ Илова кардани мол";
+  $("saveBtn").textContent = "💾 Сабт кардани мол";
+  $("cancelBtn").classList.add("hidden");
+  hidePreview();
+
+  if (clearStatus) clearMessage();
+}
+
+$("cancelBtn").addEventListener("click", () => {
   resetForm();
   message("Таҳрир бекор карда шуд.");
-};
+});
 
-$("logoutBtn").onclick = async () => {
+/* Гирифтани рӯйхати молҳо */
+function listenProducts() {
+  unsubscribeProducts = db.collection("products")
+    .onSnapshot(snapshot => {
+      $("productCount").textContent = "Ҳамагӣ: " + snapshot.size + " мол";
+      const list = $("productList");
+      list.innerHTML = "";
+
+      if (snapshot.empty) {
+        list.textContent = "Ҳоло мол илова нашудааст.";
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const row = document.createElement("div");
+        row.className = "product";
+
+        const img = document.createElement("img");
+        img.alt = safe(data.name);
+        img.loading = "lazy";
+        img.src = data.image || "";
+        img.onerror = () => { img.style.visibility = "hidden"; };
+
+        const info = document.createElement("div");
+        info.className = "product-info";
+
+        const title = document.createElement("strong");
+        title.textContent = safe(data.name);
+
+        const details = document.createElement("small");
+        details.textContent = money(data.price) + " · " +
+          (data.category || "other");
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "secondary";
+        edit.textContent = "✏️ Таҳрир";
+        edit.addEventListener("click", () => editProduct(doc.id, data));
+
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "danger";
+        del.textContent = "🗑️ Нест кардан";
+        del.addEventListener("click", () => deleteProduct(doc.id, data.name));
+
+        actions.append(edit, del);
+        info.append(title, details, actions);
+        row.append(img, info);
+        list.appendChild(row);
+      });
+    }, error => {
+      console.error(error);
+      message("Рӯйхати молҳо бор нашуд. Қоидаҳои Firestore-ро санҷ.");
+    });
+}
+
+function safe(value) {
+  return String(value == null ? "" : value);
+}
+
+/* Таҳрири мол */
+function editProduct(id, data) {
+  editingId = id;
+  existingImage = data.image || "";
+  selectedImageData = "";
+
+  $("name").value = data.name || "";
+  $("price").value = data.price ?? "";
+  $("category").value = data.category || "other";
+
+  $("image").value =
+    existingImage && /^https?:\/\//i.test(existingImage)
+      ? existingImage : "";
+
+  $("imageFile").value = "";
+  showPreview(existingImage);
+
+  $("formTitle").textContent = "✏️ Таҳрири мол";
+  $("saveBtn").textContent = "💾 Сабт кардани тағйирот";
+  $("cancelBtn").classList.remove("hidden");
+
+  clearMessage();
+  $("productForm").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* Нест кардани мол */
+async function deleteProduct(id, name) {
+  if (!confirm('Моли "' + name + '" нест карда шавад?')) return;
+
+  try {
+    await db.collection("products").doc(id).delete();
+    message("Мол нест карда шуд.");
+    if (editingId === id) resetForm();
+  } catch (error) {
+    console.error(error);
+    message("Мол нест нашуд. Иҷозати маъмурро санҷ.");
+  }
+}
+
+$("logoutBtn").addEventListener("click", async () => {
   try {
     await auth.signOut();
-    message("Шумо аз ҳисоб баромадед.");
-  } catch (e) {
+  } catch (error) {
+    console.error(error);
     message("Баромадан муваффақ нашуд.");
   }
-};
+});
 </script>
 </body>
 </html>
