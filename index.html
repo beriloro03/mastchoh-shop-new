@@ -1,135 +1,539 @@
+
 <!DOCTYPE html>
 <html lang="tg">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#087f5b">
-<title>Мастчоҳ Шоп — мағозаи онлайн</title>
+<title>Mastchoh Shop — Мағозаи онлайн</title>
+<meta name="description" content="Mastchoh Shop — молҳо ва лавозимоти гуногун бо фармоиши онлайн.">
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f7f5;color:#202a25}
-header{background:#087f5b;color:white;padding:20px 15px}
-.top{max-width:1050px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
-header h1{font-size:25px;margin:0 0 7px}
-header p{margin:0;font-size:14px}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.cartbtn{background:white;color:#087f5b;border:0;border-radius:10px;padding:12px;font-weight:bold}
-main{max-width:1050px;margin:auto;padding:16px}
-.hero{background:#dff4e7;padding:20px;border-radius:15px;margin-bottom:16px}
-.hero h2{margin:0 0 8px}
-.hero p{margin:0;line-height:1.5}
-.tools{display:flex;gap:8px;margin:16px 0}
-.tools input,.tools select{min-width:0;width:100%;padding:12px;border:1px solid #ccd5cf;border-radius:9px;background:white}
-h2.section-title{font-size:21px}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.product{background:white;border-radius:13px;padding:10px;box-shadow:0 2px 8px #0000000c;display:flex;flex-direction:column;min-width:0}
-.photo{height:150px;background:#eaf4ee;border-radius:10px;overflow:hidden;display:grid;place-items:center}
-.photo img{width:100%;height:100%;object-fit:cover}
-.fallback{display:none;font-size:48px}
-.product h3{font-size:16px;margin:12px 0 6px}
-.desc{font-size:13px;color:#68756d;margin:0 0 8px}
-.price{color:#087f5b;font-weight:bold;font-size:18px;margin:auto 0 12px;padding-top:8px}
-.btn{width:100%;border:0;border-radius:9px;padding:11px;background:#087f5b;color:white;font-weight:bold}
-.btn:active{background:#065f46}
-footer{text-align:center;padding:22px;color:#68756d;font-size:13px}
-.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:5;align-items:flex-end;justify-content:center;padding:10px}
-.overlay.open{display:flex}
-.panel{background:white;width:100%;max-width:550px;max-height:90vh;overflow:auto;border-radius:18px;padding:17px}
-.panelhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.panelhead h2{font-size:21px}
-.close{border:0;border-radius:50%;width:40px;height:40px;font-size:23px;background:#eee}
-.cartrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #eee}
-.qty{display:flex;align-items:center;gap:7px}
-.qty button{border:0;background:#e4f3e9;border-radius:6px;padding:7px 11px}
-.total{display:flex;justify-content:space-between;font-weight:bold;font-size:19px;padding:16px 0}
-.field{display:block;margin:12px 0}
-.field span{display:block;font-weight:bold;font-size:14px;margin-bottom:6px}
-.field input,.field textarea{width:100%;padding:12px;border:1px solid #ccd5cf;border-radius:9px}
-.empty{text-align:center;padding:18px;color:#68756d}
-.notice{background:#fff5d6;padding:10px;border-radius:9px;font-size:13px;line-height:1.5}
-.status{font-size:13px;color:#68756d;margin:8px 0}
-@media(min-width:650px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.photo{height:190px}}
-@media(min-width:900px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+:root {
+  --green: #087f5b;
+  --dark: #075c43;
+  --light: #e9f8f0;
+  --bg: #f5f8f6;
+  --text: #18251f;
+  --muted: #6b7771;
+  --white: #ffffff;
+  --border: #e3ebe6;
+  --shadow: 0 8px 28px rgba(14, 66, 43, .08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar {
+  max-width: 1180px;
+  margin: auto;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: var(--green);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 25px;
+}
+.brand h1 {
+  margin: 0;
+  color: var(--dark);
+  font-size: 21px;
+}
+.brand small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.cart-button, .primary-button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: var(--green);
+  color: white;
+  font-weight: bold;
+}
+.cart-button:active, .primary-button:active {
+  transform: scale(.98);
+}
+.hero {
+  max-width: 1180px;
+  margin: 22px auto 18px;
+  padding: 0 18px;
+}
+.hero-inner {
+  border-radius: 25px;
+  padding: 34px 26px;
+  background: linear-gradient(125deg, #075c43, #0ba574);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner:after {
+  content: "🛍️";
+  position: absolute;
+  right: 22px;
+  bottom: -20px;
+  font-size: 105px;
+  opacity: .20;
+}
+.hero h2 {
+  font-size: clamp(26px, 5vw, 40px);
+  margin: 0 0 12px;
+  max-width: 620px;
+}
+.hero p {
+  line-height: 1.7;
+  margin: 0 0 20px;
+  max-width: 540px;
+}
+.hero .primary-button {
+  background: white;
+  color: var(--dark);
+  position: relative;
+  z-index: 1;
+}
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 22px;
+}
+.feature {
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+main {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 18px 40px;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 25px 0 15px;
+}
+.section-heading h2 { margin: 0; font-size: 23px; }
+#productCount { color: var(--muted); font-size: 13px; }
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 230px;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.filters input, .filters select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: white;
+  padding: 14px;
+  outline: none;
+}
+.filters input:focus, .filters select:focus {
+  border-color: var(--green);
+}
+.category-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 14px;
+}
+.chip {
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  background: white;
+  padding: 9px 13px;
+  border-radius: 30px;
+  color: var(--text);
+}
+.chip.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.product {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: transform .2s;
+}
+.product:hover { transform: translateY(-3px); }
+.product-image {
+  height: 190px;
+  background: #edf4ef;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-image .placeholder { font-size: 48px; }
+.product-info {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.product-category {
+  color: var(--green);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.product h3 {
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+.product-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.price {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--dark);
+}
+.add-button {
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: 11px;
+  color: white;
+  background: var(--green);
+  font-weight: bold;
+}
+.add-button:hover { background: var(--dark); }
+.empty {
+  text-align: center;
+  background: white;
+  border-radius: 18px;
+  padding: 35px 16px;
+  color: var(--muted);
+}
+.empty-icon { font-size: 42px; margin-bottom: 10px; }
+footer {
+  background: #102b20;
+  color: white;
+  padding: 28px 18px;
+  text-align: center;
+  line-height: 1.8;
+}
+footer p { margin: 5px 0; }
+.footer-muted { color: #c5d7cd; font-size: 13px; }
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 30;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.overlay.show { display: flex; }
+.modal {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 24px 24px 0 0;
+  padding: 22px;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.modal-header h2 { margin: 0; font-size: 23px; }
+.close-button {
+  border: none;
+  background: #eef3ef;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-size: 22px;
+}
+.cart-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cart-line h4 { margin: 0 0 7px; }
+.cart-line small { color: var(--muted); }
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 9px;
+}
+.quantity button {
+  border: 1px solid var(--border);
+  background: #f5f8f6;
+  border-radius: 8px;
+  width: 31px;
+  height: 31px;
+}
+.remove-button {
+  border: none;
+  background: transparent;
+  color: #c0392b;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.total {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 19px;
+  padding: 18px 0;
+}
+.order-form { display: grid; gap: 12px; }
+.order-form label { font-size: 13px; font-weight: bold; }
+.order-form input, .order-form textarea {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: none;
+}
+.order-form textarea { min-height: 75px; resize: vertical; }
+.whatsapp-button {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  color: white;
+  background: #168c50;
+  font-weight: bold;
+  font-size: 16px;
+}
+.notice {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #173a2a;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  z-index: 60;
+  display: none;
+  max-width: 90%;
+  text-align: center;
+}
+.toast.show { display: block; }
+@media (max-width: 900px) {
+  .products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .product-image { height: 170px; }
+}
+@media (max-width: 600px) {
+  .topbar { padding: 11px 12px; }
+  .brand h1 { font-size: 18px; }
+  .brand small { font-size: 11px; }
+  .logo { width: 41px; height: 41px; }
+  .cart-button { padding: 11px 12px; font-size: 13px; }
+  .hero { padding: 0 12px; margin-top: 14px; }
+  .hero-inner { padding: 26px 19px; border-radius: 20px; }
+  .hero-inner:after { right: 5px; font-size: 72px; }
+  .hero p { font-size: 14px; }
+  main { padding: 0 12px 30px; }
+  .section-heading h2 { font-size: 20px; }
+  .filters { grid-template-columns: 1fr; gap: 9px; }
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .product { border-radius: 14px; }
+  .product-image { height: 145px; }
+  .product-info { padding: 10px; }
+  .product h3 { font-size: 14px; }
+  .price { font-size: 16px; }
+  .add-button { padding: 10px 5px; font-size: 13px; }
+  .modal { padding: 18px 15px; }
+}
+@media (max-width: 350px) {
+  .products { grid-template-columns: 1fr; }
+  .product-image { height: 210px; }
+}
 </style>
 </head>
-<body>
 
+<body>
 <header>
-<div class="top">
-<div>
-<h1>🛍️ Мастчоҳ Шоп</h1>
-<p>Мағозаи онлайни шумо</p>
-</div>
-<button class="cartbtn" onclick="openCart()">🛒 Сабад <span id="cartCount">0</span></button>
-</div>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">🛍️</div>
+      <div>
+        <h1>Mastchoh Shop</h1>
+        <small>Мағозаи онлайни шумо</small>
+      </div>
+    </div>
+    <button class="cart-button" onclick="openCart()">
+      🛒 Сабад (<span id="cartCount">0</span>)
+    </button>
+  </div>
 </header>
 
-<main>
 <section class="hero">
-<h2>Хуш омадед ба Мастчоҳ Шоп!</h2>
-<p>Молҳои дилхоҳатонро интихоб кунед, ба сабад илова кунед ва тавассути WhatsApp фармоиш диҳед.</p>
+  <div class="hero-inner">
+    <h2>Хуш омадед ба Mastchoh Shop!</h2>
+    <p>Молҳои дилхоҳатонро интихоб кунед. Фармоишро осон ва зуд тавассути WhatsApp фиристед.</p>
+    <button class="primary-button" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">
+      🛍️ Дидани молҳо
+    </button>
+    <div class="features">
+      <div class="feature">📦 Молҳои гуногун</div>
+      <div class="feature">📲 Фармоиш тавассути WhatsApp</div>
+      <div class="feature">🔒 Сабади шахсӣ</div>
+    </div>
+  </div>
 </section>
 
-<div class="tools">
-<input id="search" type="search" placeholder="🔎 Ҷустуҷӯи мол..." oninput="renderProducts()">
-<select id="category" onchange="renderProducts()">
-<option value="all">Ҳамаи молҳо</option>
-<option value="chargers">Зарядник</option>
-<option value="cables">Кабел</option>
-<option value="cases">Чехол</option>
-<option value="glass">Шиша</option>
-<option value="audio">Гӯшмонак</option>
-<option value="power">Power Bank</option>
-<option value="holders">Доранда</option>
-<option value="shoes">Пойафзол</option>
-</select>
-</div>
+<main id="catalog">
+  <div class="section-heading">
+    <h2>🛍️ Каталоги молҳо</h2>
+    <span id="productCount">Дар ҳоли боргирӣ...</span>
+  </div>
 
-<h2 class="section-title">🛍️ Молҳои мо</h2>
-<p id="status" class="status">Молҳо бор шуда истодаанд...</p>
-<div class="products" id="products"></div>
+  <div class="filters">
+    <input id="searchInput" type="search" placeholder="🔎 Ҷустуҷӯи мол..." aria-label="Ҷустуҷӯи мол">
+    <select id="categoryFilter" aria-label="Интихоби категория">
+      <option value="all">Ҳамаи категорияҳо</option>
+      <option value="chargers">🔌 Зарядникҳо</option>
+      <option value="cables">🔗 Кабелҳо</option>
+      <option value="cases">📱 Чехолҳо</option>
+      <option value="glass">🛡️ Шишаҳои муҳофизатӣ</option>
+      <option value="audio">🎧 Гӯшмонак ва аудио</option>
+      <option value="power">🔋 Power Bank</option>
+      <option value="holders">📱 Дорандаи телефон</option>
+      <option value="shoes">👟 Пойафзол</option>
+      <option value="other">📦 Дигар молҳо</option>
+    </select>
+  </div>
+
+  <div class="category-chips">
+    <button class="chip active" data-category="all">Ҳама</button>
+    <button class="chip" data-category="chargers">🔌 Зарядник</button>
+    <button class="chip" data-category="cables">🔗 Кабел</button>
+    <button class="chip" data-category="cases">📱 Чехол</button>
+    <button class="chip" data-category="audio">🎧 Аудио</button>
+    <button class="chip" data-category="power">🔋 Power Bank</button>
+    <button class="chip" data-category="other">📦 Дигар</button>
+  </div>
+
+  <div id="products" class="products">
+    <div class="empty">Молҳо бор шуда истодаанд...</div>
+  </div>
 </main>
 
-<footer>© Мастчоҳ Шоп — барои фармоиш тавассути WhatsApp нависед.</footer>
+<footer>
+  <p><strong>🛍️ Mastchoh Shop</strong></p>
+  <p>Молҳои дилхоҳатонро аз як ҷо интихоб кунед.</p>
+  <p class="footer-muted">Фармоиш тавассути WhatsApp қабул мешавад.</p>
+  <p class="footer-muted">© <span id="year"></span> Mastchoh Shop</p>
+</footer>
 
-<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
-<section class="panel">
-<div class="panelhead">
-<h2>🛒 Сабади харид</h2>
-<button class="close" onclick="closeCart()">×</button>
-</div>
-<div id="cartItems"></div>
-<div class="total"><span>Ҳамагӣ:</span><span id="total">0 сомонӣ</span></div>
+<div id="cartOverlay" class="overlay" onclick="overlayClick(event)">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <div class="modal-header">
+      <h2 id="cartTitle">🛒 Сабади харид</h2>
+      <button class="close-button" onclick="closeCart()" aria-label="Пӯшидан">×</button>
+    </div>
+    <div id="cartItems"></div>
+    <div class="total">
+      <span>Ҳамагӣ:</span>
+      <span id="cartTotal">0 сомонӣ</span>
+    </div>
 
-<h3>Маълумоти фармоиш</h3>
-<form id="checkoutForm">
-<label class="field">
-<span>Номи шумо *</span>
-<input id="customerName" required placeholder="Ному насаб">
-</label>
-<label class="field">
-<span>Рақами телефон *</span>
-<input id="customerPhone" type="tel" required placeholder="+992 ...">
-</label>
-<label class="field">
-<span>Суроғаи расонидан</span>
-<input id="customerAddress" placeholder="Шаҳр, ноҳия ё деҳа">
-</label>
-<p class="notice">Пас аз пахш кардан WhatsApp кушода мешавад. Барои фиристодани фармоиш дар WhatsApp тугмаи «Отправить»-ро пахш кунед.</p>
-<button class="btn" type="submit">📲 Фармоиш тавассути WhatsApp</button>
-</form>
-</section>
+    <form id="orderForm" class="order-form">
+      <label>
+        Ному насаб
+        <input id="customerName" required maxlength="100" placeholder="Номи шумо">
+      </label>
+      <label>
+        Рақами телефон
+        <input id="customerPhone" required type="tel" maxlength="30" placeholder="+992...">
+      </label>
+      <label>
+        Суроға ё шарҳ (ихтиёрӣ)
+        <textarea id="customerAddress" maxlength="500" placeholder="Суроғаи расонидан ё шарҳи фармоиш"></textarea>
+      </label>
+      <button class="whatsapp-button" type="submit">📲 Фиристодани фармоиш ба WhatsApp</button>
+      <p class="notice">Пас аз пахш кардан WhatsApp кушода мешавад. Барои фиристодани фармоиш ту бояд паёмро дар WhatsApp тасдиқ карда фиристӣ.</p>
+    </form>
+  </section>
 </div>
+
+<div id="toast" class="toast" role="status"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
+"use strict";
+
+/* Танзимоти мағоза */
 const WHATSAPP_NUMBER = "79964468762";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-xxtLfEmtBfe0",
+  apiKey: "AIzaSyDXMXpbPwTWxPIXLDtcuF-XxtLfEmtBfe0",
   authDomain: "mastchoh-shop-4a490.firebaseapp.com",
   projectId: "mastchoh-shop-4a490",
   storageBucket: "mastchoh-shop-4a490.firebasestorage.app",
@@ -137,220 +541,264 @@ const firebaseConfig = {
   appId: "1:948589793868:web:cc2050951f2d452a0b5ae9"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
+/* Молҳои намунавӣ — то вақте ки молҳои Firebase бор мешаванд */
 const defaultProducts = [
-{
-id:1,
-name:"Зарядник Type-C",
-category:"chargers",
-categoryName:"Зарядник",
-price:25,
-icon:"🔌",
-image:"https://images.unsplash.com/photo-1591290619762-c5887b7b5e2c?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:2,
-name:"Кабели USB",
-category:"cables",
-categoryName:"Кабел",
-price:15,
-icon:"🔗",
-image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:3,
-name:"Чехоли телефон",
-category:"cases",
-categoryName:"Чехол",
-price:20,
-icon:"📱",
-image:"https://images.unsplash.com/photo-1601593346740-925612772716?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:4,
-name:"Шишаи муҳофизатӣ",
-category:"glass",
-categoryName:"Шиша",
-price:10,
-icon:"🛡️",
-image:"https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:5,
-name:"Гӯшмонак",
-category:"audio",
-categoryName:"Гӯшмонак",
-price:45,
-icon:"🎧",
-image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:6,
-name:"Power Bank",
-category:"power",
-categoryName:"Power Bank",
-price:120,
-icon:"🔋",
-image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:7,
-name:"Дорандаи телефон",
-category:"holders",
-categoryName:"Доранда",
-price:35,
-icon:"📱",
-image:"https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=600&q=80"
-},
-{
-id:8,
-name:"Кроссовка",
-category:"shoes",
-categoryName:"Пойафзол",
-price:350,
-icon:"👟",
-image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
-}
+  {id:"default-1", name:"Зарядник Type-C", price:25, category:"chargers", image:"https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-2", name:"Кабели USB", price:15, category:"cables", image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-3", name:"Чехол барои телефон", price:20, category:"cases", image:"https://images.unsplash.com/photo-1601593346740-925612772716?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-4", name:"Гӯшмонак", price:45, category:"audio", image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-5", name:"Power Bank", price:120, category:"power", image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-6", name:"Дорандаи телефон", price:35, category:"holders", image:"https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-7", name:"Пойафзол", price:350, category:"shoes", image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"},
+  {id:"default-8", name:"Шишаи муҳофизатӣ", price:15, category:"glass", image:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80"}
 ];
 
 const categoryNames = {
-chargers:"Зарядник",
-cables:"Кабел",
-cases:"Чехол",
-glass:"Шиша",
-audio:"Гӯшмонак",
-power:"Power Bank",
-holders:"Доранда",
-shoes:"Пойафзол"
-};
-
-const categoryIcons = {
-chargers:"🔌",
-cables:"🔗",
-cases:"📱",
-glass:"🛡️",
-audio:"🎧",
-power:"🔋",
-holders:"📱",
-shoes:"👟"
+  chargers:"Зарядникҳо",
+  cables:"Кабелҳо",
+  cases:"Чехолҳо",
+  glass:"Шишаҳои муҳофизатӣ",
+  audio:"Аудио",
+  power:"Power Bank",
+  holders:"Дорандаи телефон",
+  shoes:"Пойафзол",
+  other:"Дигар молҳо"
 };
 
 let productsData = [...defaultProducts];
-let cart = {};
+let cart = [];
+let selectedCategory = "all";
+let db = null;
+let firebaseConnected = false;
 
-function money(n) {
-  return Number(n || 0).toLocaleString("en-US") + " сомонӣ";
+const productsElement = document.getElementById("products");
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function money(value) {
+  return Number(value || 0).toLocaleString("ru-RU") + " сомонӣ";
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
 function safeText(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c]));
+  return String(value == null ? "" : value);
 }
 
 function renderProducts() {
-  const q = document.getElementById("search").value.trim().toLowerCase();
-  const cat = document.getElementById("category").value;
+  const query = searchInput.value.trim().toLowerCase();
+  const category = categoryFilter.value;
 
-  const filtered = productsData.filter(p =>
-    (cat === "all" || p.category === cat) &&
-    (
-      String(p.name).toLowerCase().includes(q) ||
-      String(p.categoryName).toLowerCase().includes(q)
-    )
-  );
+  const filtered = productsData.filter(product => {
+    const name = safeText(product.name).toLowerCase();
+    const matchesName = name.includes(query);
+    const matchesCategory = category === "all" || product.category === category;
+    return matchesName && matchesCategory;
+  });
 
-  const area = document.getElementById("products");
+  document.getElementById("productCount").textContent =
+    filtered.length + " мол";
+
+  document.querySelectorAll(".chip").forEach(chip => {
+    chip.classList.toggle("active", chip.dataset.category === category);
+  });
 
   if (!filtered.length) {
-    area.innerHTML = '<div class="empty">Мол ёфт нашуд.</div>';
+    productsElement.innerHTML =
+      '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🔎</div><strong>Мол ёфт нашуд</strong><p>Номи дигар ё категорияи дигарро интихоб кун.</p></div>';
     return;
   }
 
-  area.innerHTML = filtered.map(p => {
-    const img = String(p.image || "");
+  productsElement.innerHTML = "";
 
-    const imageHtml = /^https:\/\//i.test(img)
-      ? `<img src="${safeText(img)}" alt="${safeText(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`
-      : "";
+  filtered.forEach(product => {
+    const card = document.createElement("article");
+    card.className = "product";
 
-    return `
-      <article class="product">
-        <div class="photo">
-          ${imageHtml}
-          <span class="fallback" style="display:${imageHtml ? 'none' : 'block'}">${safeText(p.icon || "📦")}</span>
-        </div>
-        <h3>${safeText(p.name)}</h3>
-        <p class="desc">${safeText(p.categoryName || categoryNames[p.category] || "Мол")}</p>
-        <div class="price">${money(p.price)}</div>
-        <button class="btn" onclick="addToCart('${String(p.id).replace(/'/g,"\\'")}')">➕ Ба сабад илова кун</button>
-      </article>
-    `;
-  }).join("");
+    const imageBox = document.createElement("div");
+    imageBox.className = "product-image";
+
+    if (product.image && /^https?:\/\//i.test(product.image)) {
+      const img = document.createElement("img");
+      img.src = product.image;
+      img.alt = safeText(product.name);
+      img.loading = "lazy";
+      img.onerror = () => {
+        imageBox.innerHTML = '<span class="placeholder">📦</span>';
+      };
+      imageBox.appendChild(img);
+    } else {
+      imageBox.innerHTML = '<span class="placeholder">📦</span>';
+    }
+
+    const info = document.createElement("div");
+    info.className = "product-info";
+
+    const categoryLabel = document.createElement("div");
+    categoryLabel.className = "product-category";
+    categoryLabel.textContent = categoryNames[product.category] || "Мол";
+
+    const title = document.createElement("h3");
+    title.textContent = safeText(product.name);
+
+    const bottom = document.createElement("div");
+    bottom.className = "product-bottom";
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = money(product.price);
+
+    const addButton = document.createElement("button");
+    addButton.className = "add-button";
+    addButton.textContent = "＋ Ба сабад";
+    addButton.addEventListener("click", () => addToCart(product.id));
+
+    bottom.append(price, addButton);
+    info.append(categoryLabel, title, bottom);
+    card.append(imageBox, info);
+    productsElement.appendChild(card);
+  });
 }
 
-function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
+function addToCart(productId) {
+  const product = productsData.find(item => item.id === productId);
+  if (!product) return;
+
+  const existing = cart.find(item => item.id === productId);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({...product, qty:1});
+  }
+
+  updateCart();
+  showToast("✅ Мол ба сабад илова шуд");
+}
+
+function changeQty(productId, change) {
+  const item = cart.find(product => product.id === productId);
+  if (!item) return;
+
+  item.qty += change;
+  if (item.qty <= 0) {
+    cart = cart.filter(product => product.id !== productId);
+  }
   updateCart();
 }
 
-function changeQty(id, amount) {
-  cart[id] = (cart[id] || 0) + amount;
-  if (cart[id] <= 0) delete cart[id];
+function removeFromCart(productId) {
+  cart = cart.filter(product => product.id !== productId);
   updateCart();
 }
 
 function updateCart() {
-  const count = Object.values(cart).reduce((a,b) => a + b, 0);
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  const total = cart.reduce((sum, item) => sum + Number(item.price) * item.qty, 0);
+
   document.getElementById("cartCount").textContent = count;
+  document.getElementById("cartTotal").textContent = money(total);
 
-  const items = productsData.filter(p => cart[p.id]);
-  const box = document.getElementById("cartItems");
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = "";
 
-  if (!items.length) {
-    box.innerHTML = '<div class="empty">Сабад ҳоло холӣ аст.</div>';
-  } else {
-    box.innerHTML = items.map(p => `
-      <div class="cartrow">
-        <div>
-          <strong>${safeText(p.name)}</strong><br>
-          <small>${money(p.price)} × ${cart[p.id]}</small>
-        </div>
-        <div class="qty">
-          <button onclick="changeQty('${String(p.id).replace(/'/g,"\\'")}',-1)">−</button>
-          <span>${cart[p.id]}</span>
-          <button onclick="changeQty('${String(p.id).replace(/'/g,"\\'")}',1)">+</button>
-        </div>
-      </div>
-    `).join("");
+  if (!cart.length) {
+    cartItems.innerHTML =
+      '<div class="empty"><div class="empty-icon">🛒</div><strong>Сабад холӣ аст</strong><p>Аввал мол интихоб кун.</p></div>';
+    document.getElementById("orderForm").style.display = "none";
+    return;
   }
 
-  const total = items.reduce((sum,p) => sum + Number(p.price || 0) * cart[p.id], 0);
-  document.getElementById("total").textContent = money(total);
+  document.getElementById("orderForm").style.display = "grid";
+
+  cart.forEach(item => {
+    const line = document.createElement("div");
+    line.className = "cart-line";
+
+    const details = document.createElement("div");
+    const title = document.createElement("h4");
+    title.textContent = safeText(item.name);
+
+    const price = document.createElement("small");
+    price.textContent = money(item.price) + " × " + item.qty;
+
+    const quantity = document.createElement("div");
+    quantity.className = "quantity";
+
+    const minus = document.createElement("button");
+    minus.type = "button";
+    minus.textContent = "−";
+    minus.setAttribute("aria-label", "Кам кардани миқдор");
+    minus.addEventListener("click", () => changeQty(item.id, -1));
+
+    const qty = document.createElement("strong");
+    qty.textContent = item.qty;
+
+    const plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "+";
+    plus.setAttribute("aria-label", "Зиёд кардани миқдор");
+    plus.addEventListener("click", () => changeQty(item.id, 1));
+
+    quantity.append(minus, qty, plus);
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "remove-button";
+    remove.textContent = "Нест кардан";
+    remove.addEventListener("click", () => removeFromCart(item.id));
+
+    details.append(title, price, quantity, remove);
+
+    const lineTotal = document.createElement("strong");
+    lineTotal.textContent = money(Number(item.price) * item.qty);
+
+    line.append(details, lineTotal);
+    cartItems.appendChild(line);
+  });
 }
 
 function openCart() {
-  document.getElementById("cartOverlay").classList.add("open");
   updateCart();
+  document.getElementById("cartOverlay").classList.add("show");
+  document.body.style.overflow = "hidden";
 }
 
 function closeCart() {
-  document.getElementById("cartOverlay").classList.remove("open");
+  document.getElementById("cartOverlay").classList.remove("show");
+  document.body.style.overflow = "";
 }
 
-document.getElementById("checkoutForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+function overlayClick(event) {
+  if (event.target.id === "cartOverlay") closeCart();
+}
 
-  const items = productsData.filter(p => cart[p.id]);
+searchInput.addEventListener("input", renderProducts);
 
-  if (!items.length) {
-    alert("Аввал молро ба сабад илова кунед.");
+categoryFilter.addEventListener("change", () => {
+  selectedCategory = categoryFilter.value;
+  renderProducts();
+});
+
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    selectedCategory = chip.dataset.category;
+    categoryFilter.value = selectedCategory;
+    renderProducts();
+  });
+});
+
+document.getElementById("orderForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  if (!cart.length) {
+    showToast("Сабад холӣ аст");
     return;
   }
 
@@ -358,68 +806,85 @@ document.getElementById("checkoutForm").addEventListener("submit", function(e) {
   const phone = document.getElementById("customerPhone").value.trim();
   const address = document.getElementById("customerAddress").value.trim();
 
-  const lines = items.map(p =>
-    `• ${p.name} — ${cart[p.id]} дона × ${p.price} = ${Number(p.price) * cart[p.id]} сомонӣ`
-  );
+  if (!name || !phone) {
+    showToast("Ном ва рақами телефонро пур кун");
+    return;
+  }
 
-  const total = items.reduce((sum,p) => sum + Number(p.price || 0) * cart[p.id], 0);
+  const total = cart.reduce((sum, item) =>
+    sum + Number(item.price) * item.qty, 0);
 
-  const message =
-    `Салом! Ман аз Мастчоҳ Шоп фармоиш медиҳам.\n\n` +
-    `Молҳо:\n${lines.join("\n")}\n\n` +
-    `Ҳамагӣ: ${total} сомонӣ\n\n` +
-    `Ном: ${name}\nТелефон: ${phone}\nСуроға: ${address || "Муайян нашудааст"}`;
+  let message = "🛍️ ФАРМОИШИ НАВ — MASTCHOH SHOP\n\n";
+  message += "👤 Ном: " + name + "\n";
+  message += "📞 Телефон: " + phone + "\n\n";
+  message += "📦 МОЛҲО:\n";
 
-  const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+  cart.forEach((item, index) => {
+    message += (index + 1) + ". " + item.name +
+      " — " + item.qty + " дона × " + item.price +
+      " = " + (Number(item.price) * item.qty) + " сомонӣ\n";
+  });
+
+  message += "\n💰 ҲАМАГӢ: " + total + " сомонӣ\n";
+  if (address) message += "📍 Суроға/шарҳ: " + address + "\n";
+  message += "\nФармоиш аз сомонаи Mastchoh Shop.";
+
+  const url = "https://wa.me/" + WHATSAPP_NUMBER +
+    "?text=" + encodeURIComponent(message);
+
   window.open(url, "_blank");
 });
 
-// Молҳои навро аз Firebase мехонад.
-db.collection("products").onSnapshot(snapshot => {
-  const fromFirebase = snapshot.docs.map(doc => {
-    const d = doc.data();
-    const category = d.category || "chargers";
+/* Пайвастшавӣ ба Firebase Firestore */
+function startFirebase() {
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
 
-    return {
-      id: doc.id,
-      name: d.name || "Моли нав",
-      price: Number(d.price) || 0,
-      category: category,
-      categoryName: categoryNames[category] || category,
-      icon: categoryIcons[category] || "📦",
-      image: d.image || ""
-    };
-  });
+    db = firebase.firestore();
 
-  // Молҳои пешина бо молҳои нави Firebase якҷо нишон дода мешаванд.
-  const firebaseNames = new Set(
-    fromFirebase.map(p => String(p.name).trim().toLowerCase())
-  );
+    db.collection("products").onSnapshot(snapshot => {
+      firebaseConnected = true;
 
-  const oldProducts = defaultProducts.filter(
-    p => !firebaseNames.has(p.name.trim().toLowerCase())
-  );
+      const firebaseProducts = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.name || "Моли нав",
+          price: Number(data.price || 0),
+          category: data.category || "other",
+          image: data.image || ""
+        };
+      });
 
-  productsData = [...oldProducts, ...fromFirebase];
+      const firebaseNames = new Set(
+        firebaseProducts.map(product => product.name.trim().toLowerCase())
+      );
 
-  document.getElementById("status").textContent = "Молҳо: " + productsData.length;
+      const remainingDefaults = defaultProducts.filter(
+        product => !firebaseNames.has(product.name.trim().toLowerCase())
+      );
 
-  renderProducts();
-  updateCart();
-
-}, error => {
-  console.error("Firestore read error:", error);
-
-  document.getElementById("status").textContent =
-    "Молҳои захиравӣ нишон дода мешаванд; пайвасти Firebase-ро санҷед.";
-
-  renderProducts();
-  updateCart();
-});
+      productsData = [...firebaseProducts, ...remainingDefaults];
+      renderProducts();
+    }, error => {
+      console.error("Firestore error:", error);
+      productsData = [...defaultProducts];
+      renderProducts();
+      showToast("Пайвастшавӣ ба Firebase муваққатан дастнорас аст");
+    });
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+    productsData = [...defaultProducts];
+    renderProducts();
+    showToast("Молҳои намунавӣ нишон дода мешаванд");
+  }
+}
 
 renderProducts();
 updateCart();
+startFirebase();
 </script>
-
 </body>
 </html>
